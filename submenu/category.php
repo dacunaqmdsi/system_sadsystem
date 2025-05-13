@@ -5,6 +5,7 @@
 if (isset($_POST['add_category'])) {
     $category = mysqli_real_escape_string($db_connection, $_POST['category']);
     mysqli_query($db_connection, "INSERT INTO tblcategory (category, is_archived) VALUES ('$category', 'No')");
+    Audit($user['accountid'], 'Added category', 'Added category');
 }
 
 // Handle Edit Category
@@ -12,6 +13,7 @@ if (isset($_POST['edit_category']) && isset($_POST['categoryid'])) {
     $category = mysqli_real_escape_string($db_connection, $_POST['category']);
     $categoryid = intval($_POST['categoryid']);
     mysqli_query($db_connection, "UPDATE tblcategory SET category = '$category' WHERE categoryid = $categoryid");
+    Audit($user['accountid'], 'Updated category', 'Updated category');
 }
 
 // Handle Get for Editing

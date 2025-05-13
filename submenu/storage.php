@@ -5,6 +5,7 @@
 if (isset($_POST['add_storage'])) {
     $storage = mysqli_real_escape_string($db_connection, $_POST['storage']);
     mysqli_query($db_connection, "INSERT INTO tblstorage (storage, is_archived) VALUES ('$storage', 'No')");
+    Audit($user['accountid'], 'Added storage', 'Added storage');
 }
 
 // Handle Edit Storage
@@ -12,6 +13,7 @@ if (isset($_POST['edit_storage']) && isset($_POST['storageid'])) {
     $storage = mysqli_real_escape_string($db_connection, $_POST['storage']);
     $storageid = intval($_POST['storageid']);
     mysqli_query($db_connection, "UPDATE tblstorage SET storage = '$storage' WHERE storageid = $storageid");
+    Audit($user['accountid'], 'Updated storage', 'Updated storage');
 }
 
 // Handle Get for Editing

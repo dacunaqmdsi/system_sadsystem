@@ -5,6 +5,7 @@
 if (isset($_POST['add_unit'])) {
     $unit = mysqli_real_escape_string($db_connection, $_POST['unit']);
     mysqli_query($db_connection, "INSERT INTO tblunit (unit, is_archived) VALUES ('$unit', 'No')");
+    Audit($user['accountid'], 'Added unit', 'Added unit');
 }
 
 // Handle Edit Unit
@@ -12,6 +13,7 @@ if (isset($_POST['edit_unit']) && isset($_POST['unitid'])) {
     $unit = mysqli_real_escape_string($db_connection, $_POST['unit']);
     $unitid = intval($_POST['unitid']);
     mysqli_query($db_connection, "UPDATE tblunit SET unit = '$unit' WHERE unitid = $unitid");
+    Audit($user['accountid'], 'Updated unit', 'Updated unit');
 }
 
 // Handle Get for Editing

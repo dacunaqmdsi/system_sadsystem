@@ -5,6 +5,7 @@
 if (isset($_POST['add_size'])) {
     $size = mysqli_real_escape_string($db_connection, $_POST['size']);
     mysqli_query($db_connection, "INSERT INTO tblsizes (size, is_archived) VALUES ('$size', 'No')");
+    Audit($user['accountid'], 'Added size', 'Added size');
 }
 
 // Edit Size
@@ -12,6 +13,7 @@ if (isset($_POST['edit_size']) && isset($_POST['sizesid'])) {
     $size = mysqli_real_escape_string($db_connection, $_POST['size']);
     $sizesid = intval($_POST['sizesid']);
     mysqli_query($db_connection, "UPDATE tblsizes SET size = '$size' WHERE sizesid = $sizesid");
+    Audit($user['accountid'], 'Updated size', 'Updated size');
 }
 
 // Load for Editing

@@ -5,6 +5,7 @@
 if (isset($_POST['add_cooperative'])) {
     $cooperative = mysqli_real_escape_string($db_connection, $_POST['cooperative']);
     mysqli_query($db_connection, "INSERT INTO tblcooperative (cooperative, is_archived) VALUES ('$cooperative', 'No')");
+    Audit($user['accountid'], 'Added cooperative', 'Added cooperative');
 }
 
 // Handle Edit
@@ -12,6 +13,7 @@ if (isset($_POST['edit_cooperative']) && isset($_POST['cooperativeid'])) {
     $cooperative = mysqli_real_escape_string($db_connection, $_POST['cooperative']);
     $cooperativeid = intval($_POST['cooperativeid']);
     mysqli_query($db_connection, "UPDATE tblcooperative SET cooperative = '$cooperative' WHERE cooperativeid = $cooperativeid");
+    Audit($user['accountid'], 'Updated cooperative', 'Updated cooperative');
 }
 
 // Handle Get for Editing

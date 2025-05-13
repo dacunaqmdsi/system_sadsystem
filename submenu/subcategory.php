@@ -5,6 +5,7 @@
 if (isset($_POST['add_subcategory'])) {
     $subcategory = mysqli_real_escape_string($db_connection, $_POST['subcategory']);
     mysqli_query($db_connection, "INSERT INTO tblsubcategory (subcategory, is_archived) VALUES ('$subcategory', 'No')");
+    Audit($user['accountid'], 'Added subcategory', 'Added subcategory');
 }
 
 // Handle Edit Subcategory
@@ -12,6 +13,7 @@ if (isset($_POST['edit_subcategory']) && isset($_POST['subcategoryid'])) {
     $subcategory = mysqli_real_escape_string($db_connection, $_POST['subcategory']);
     $subcategoryid = intval($_POST['subcategoryid']);
     mysqli_query($db_connection, "UPDATE tblsubcategory SET subcategory = '$subcategory' WHERE subcategoryid = $subcategoryid");
+    Audit($user['accountid'], 'Updated subcategory', 'Updated subcategory');
 }
 
 // Handle Get for Editing

@@ -4,6 +4,7 @@
 if (isset($_POST['add_madefrom'])) {
     $madefrom = mysqli_real_escape_string($db_connection, $_POST['madefrom']);
     mysqli_query($db_connection, "INSERT INTO tblmadefrom (madefrom, is_archived) VALUES ('$madefrom', 'No')");
+    Audit($user['accountid'], 'Added made from', 'Added made from');
 }
 
 // Edit
@@ -11,6 +12,7 @@ if (isset($_POST['edit_madefrom']) && isset($_POST['madefromid'])) {
     $madefrom = mysqli_real_escape_string($db_connection, $_POST['madefrom']);
     $madefromid = intval($_POST['madefromid']);
     mysqli_query($db_connection, "UPDATE tblmadefrom SET madefrom = '$madefrom' WHERE madefromid = $madefromid");
+    Audit($user['accountid'], 'Updated made from', 'Updated made from');
 }
 
 // Load data for edit

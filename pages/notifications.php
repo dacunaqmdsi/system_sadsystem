@@ -1,12 +1,39 @@
 <?php include('../includes/init.php'); ?>
 
-
 <h2>Notifications</h2>
 
 <div class="notification-container">
     <div class="section-title">System Notifications</div>
     <div class="notification-box">
         Notifications will appear here.
+        <table class="audit-trail-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Account ID</th>
+                    <th>Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $rs = mysqli_query($db_connection, 'SELECT a.*, b.* FROM tblaudittrail a, tblaccounts b WHERE a.accountid=b.accountid ORDER BY a.created_at DESC');
+                while ($rw = mysqli_fetch_array($rs)) {
+                    $created_at = date('F j, Y - g:i A', strtotime($rw['created_at']));
+
+                    $accountid = htmlspecialchars($rw['first_name']); // Sanitize the accountid
+                    $accountid2 = htmlspecialchars($rw['last_name']); // Sanitize the accountid
+                    $activity = htmlspecialchars($rw['activity']); // Sanitize the activity
+                    echo '
+                        <tr>
+                            <td>' . $created_at . '</td>
+                            <td>' . $accountid . ' ' . $accountid2 . '</td>
+                            <td>' . $activity . '</td>
+                        </tr>
+                    ';
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
 

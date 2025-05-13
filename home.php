@@ -609,6 +609,135 @@ if (isset($_SESSION['accountid'])) {
                 });
             }
         }
+
+        function insert_inventory() {
+            // Store values in variables
+            const product_id = document.getElementById('product_id').value.trim();
+            const product_name = document.getElementById('product_name').value.trim();
+            const color = document.getElementById('color').value.trim();
+            const categoryid = document.getElementById('categoryid').value;
+            const subcategoryid = document.getElementById('subcategoryid').value;
+            const sizesid = document.getElementById('sizesid').value;
+            const madefromid = document.getElementById('madefromid').value;
+            const cooperativeid = document.getElementById('cooperativeid').value;
+            const qty_available = document.getElementById('qty_available').value;
+            const reorder_threshold = document.getElementById('reorder_threshold').value;
+            const storageid = document.getElementById('storageid').value;
+            const cost_price = document.getElementById('cost_price').value;
+            const retail_price = document.getElementById('retail_price').value;
+            const unitid = document.getElementById('unitid').value;
+            const current_stock = document.getElementById('current_stock').value;
+            const new_stock = document.getElementById('new_stock').value;
+            const total_stock = document.getElementById('total_stock').value;
+
+            // // Sample validation
+            // if (!product_id || !product_name || !categoryid || !subcategoryid || !unitid) {
+            //     alert("Please fill in all required fields.");
+            //     return;
+            // }
+
+            // If validation passes, create FormData
+            const formData = new FormData();
+            formData.append('product_id', product_id);
+            formData.append('product_name', product_name);
+            formData.append('color', color);
+            formData.append('categoryid', categoryid);
+            formData.append('subcategoryid', subcategoryid);
+            formData.append('sizesid', sizesid);
+            formData.append('madefromid', madefromid);
+            formData.append('cooperativeid', cooperativeid);
+            formData.append('qty_available', qty_available);
+            formData.append('reorder_threshold', reorder_threshold);
+            formData.append('storageid', storageid);
+            formData.append('cost_price', cost_price);
+            formData.append('retail_price', retail_price);
+            formData.append('unitid', unitid);
+            formData.append('current_stock', current_stock);
+            formData.append('new_stock', new_stock);
+            formData.append('total_stock', total_stock);
+            formData.append('add_inventory', 1);
+
+
+            if (confirm("Are you sure you want to create this user?")) {
+                $.ajax({
+                    url: 'pages/inventory.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#main_content").html(data);
+                        $("#main_content").css('opacity', '1');
+                        // document.getElementById("unit").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+
+        }
+
+        function update_inventory(inventory_id) {
+            // Collect values from the form fields
+            const product_id = document.getElementById('product_id').value.trim();
+            const product_name = document.getElementById('product_name').value.trim();
+            const color = document.getElementById('color').value.trim();
+            const categoryid = document.getElementById('categoryid').value;
+            const subcategoryid = document.getElementById('subcategoryid').value;
+            const sizesid = document.getElementById('sizesid').value;
+            const madefromid = document.getElementById('madefromid').value;
+            const cooperativeid = document.getElementById('cooperativeid').value;
+            const qty_available = document.getElementById('qty_available').value;
+            const reorder_threshold = document.getElementById('reorder_threshold').value;
+            const storageid = document.getElementById('storageid').value;
+            const cost_price = document.getElementById('cost_price').value;
+            const retail_price = document.getElementById('retail_price').value;
+            const unitid = document.getElementById('unitid').value;
+            const current_stock = document.getElementById('current_stock').value;
+            const new_stock = document.getElementById('new_stock').value;
+            const total_stock = document.getElementById('total_stock').value;
+
+            // Create FormData object for the update request
+            const formData = new FormData();
+            formData.append('inventory_id', inventory_id); // Append inventory ID
+            formData.append('product_id', product_id);
+            formData.append('product_name', product_name);
+            formData.append('color', color);
+            formData.append('categoryid', categoryid);
+            formData.append('subcategoryid', subcategoryid);
+            formData.append('sizesid', sizesid);
+            formData.append('madefromid', madefromid);
+            formData.append('cooperativeid', cooperativeid);
+            formData.append('qty_available', qty_available);
+            formData.append('reorder_threshold', reorder_threshold);
+            formData.append('storageid', storageid);
+            formData.append('cost_price', cost_price);
+            formData.append('retail_price', retail_price);
+            formData.append('unitid', unitid);
+            formData.append('current_stock', current_stock);
+            formData.append('new_stock', new_stock);
+            formData.append('total_stock', total_stock);
+            formData.append('update_inventory', 1); // Indicate update operation
+
+            // Confirmation before proceeding with the update
+            if (confirm("Are you sure you want to update this inventory item?")) {
+                $.ajax({
+                    url: 'pages/inventory.php', // The PHP file handling the request
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#main_content").html(data); // Update the content on success
+                        $("#main_content").css('opacity', '1');
+                    },
+                    error: function() {
+                        alert("Error occurred while updating the inventory.");
+                    }
+                });
+            }
+        }
     </script>
 </head>
 
