@@ -1,0 +1,825 @@
+/* Inventory Module Styles */
+.inventory-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inventory-grid {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-right: 24px;
+    margin-bottom: 20px;
+}
+
+.inventory-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.inventory-controls input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.inventory-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.small-btn, .add-btn, .search-btn {
+    padding: 2px 10px;
+    font-size: 12px;
+    min-width: unset;
+    width: auto;
+    height: 26px;
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.small-btn:hover, .add-btn:hover, .search-btn:hover {
+    background: #388e3c;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group.compact {
+    flex: 1;
+}
+
+.form-group.compact label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.form-group.compact input,
+.form-group.compact select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.form-group.compact input[type="number"] {
+    width: 100%;
+}
+
+.form-group.compact input[type="date"] {
+    width: 100%;
+}
+
+/* Inventory List Table */
+#inventoryList {
+    overflow-x: auto;
+}
+
+#inventoryList table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+#inventoryList th,
+#inventoryList td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#inventoryList th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+#inventoryList tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .inventory-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .inventory-controls input[type="text"] {
+        width: 100%;
+    }
+}
+
+.horizontal-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.wide-input {
+    width: 15ch !important;
+    min-width: 120px;
+    max-width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .horizontal-form-row {
+        flex-wrap: wrap;
+    }
+    .wide-input {
+        min-width: 100px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .horizontal-form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .wide-input {
+        width: 100% !important;
+    }
+}
+
+.inventory-filters select {
+    height: 32px;
+    font-size: 12px;
+    padding: 0 8px;
+}
+.inventory-filters {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.mini-filter {
+    height: 28px;
+    font-size: 12px;
+    padding: 0 6px;
+    min-width: 90px;
+    max-width: 140px;
+}
+
+nav#navBar {
+    width: 300px;
+}
+.logo-space {
+    height: 140px;
+    padding: 0;
+    margin-bottom: 10px;
+}
+.logo-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.logo {
+    width: 100%;
+    height: auto;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+.menu-items {
+    padding: 15px;
+    margin-top: 0;
+}
+.menu-items a {
+    padding: 12px 18px;
+}
+
+.sales-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-left: 0;
+}
+.item-inquiry {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    width: 480px;
+    margin-bottom: 0;
+}
+.search-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.search-bar input[type="text"] {
+    font-size: 13px;
+    padding: 6px 8px;
+    height: 28px;
+    width: 220px;
+}
+.search-icon {
+    padding: 2px 10px;
+    font-size: 13px;
+    min-width: unset;
+    width: auto;
+    height: 28px;
+    background: #8b7355;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-icon i { font-size: 14px; }
+.search-icon:hover { background: #6b5c4d; }
+
+.order-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    width: 480px;
+    margin-bottom: 0;
+}
+.order-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.order-fields input,
+.order-fields select {
+    width: 200px;
+    font-size: 13px;
+    padding: 6px 8px;
+    height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.order-fields label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 2px;
+}
+.add-order-btn {
+    padding: 2px 10px;
+    font-size: 13px;
+    min-width: unset;
+    width: auto;
+    height: 28px;
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.add-order-btn:hover { background: #388e3c; }
+
+.receipt-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    width: 320px;
+    margin-bottom: 0;
+    font-size: 13px;
+}
+.receipt-section select {
+    font-size: 13px;
+    height: 28px;
+    padding: 4px 8px;
+}
+.print-btn {
+    width: auto !important;
+    min-width: 80px !important;
+    padding: 6px 12px !important;
+    margin-top: 15px;
+}
+.print-btn:hover { background: #6b5c4d; }
+
+.module h2 {
+    text-align: left;
+    font-size: 22px;
+    margin-left: 0;
+}
+.form-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.form-section {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+footer {
+    margin: 0;
+    padding: 4px 10px 4px 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    position: fixed;
+    right: 10px;
+    bottom: 4px;
+    z-index: 100;
+}
+#clock {
+    float: right;
+    padding: 4px 10px;
+    background: #fff;
+    border: 1px solid #d4c9b8;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 13px;
+}
+
+.user-management-container-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    padding: 20px 24px 20px 24px;
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-start;
+    width: 700px;
+    margin-left: 0;
+    margin-top: 0;
+}
+.user-list-section {
+    flex: 2;
+    min-width: 320px;
+}
+.user-form-section {
+    flex: 1;
+    min-width: 220px;
+}
+.user-table table {
+    font-size: 13px;
+}
+.user-table th, .user-table td {
+    padding: 6px 8px;
+}
+.user-form-section input, .user-form-section select {
+    font-size: 13px;
+    padding: 6px 8px;
+    height: 28px;
+    margin-bottom: 8px;
+}
+.user-form-section button {
+    padding: 4px 12px;
+    font-size: 13px;
+    min-width: unset;
+    width: auto;
+    height: 28px;
+    background: #8b7355;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+.user-form-section button:hover {
+    background: #6b5c4d;
+}
+
+.dashboard-module, #dashboardModule {
+    font-size: 13px;
+}
+.dashboard-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+.metrics-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.metric-card {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    font-size: 13px;
+    min-width: 140px;
+}
+.metric-card h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+.metric-value {
+    font-size: 16px;
+    font-weight: bold;
+}
+.metric-trend {
+    font-size: 12px;
+    color: #888;
+}
+.charts-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.chart-card {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    font-size: 13px;
+    flex: 1;
+}
+.chart-card h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+.bottom-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 0;
+}
+.data-card {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    font-size: 13px;
+    flex: 1;
+}
+.data-card h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+.data-table th, .data-table td {
+    font-size: 12px;
+    padding: 6px 8px;
+}
+
+.notification-module-box {
+    margin-left: 0;
+    width: 600px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    padding: 20px 24px 20px 24px;
+    text-align: left;
+    min-height: 120px;
+}
+
+.module#notificationModule {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    text-align: left;
+}
+.module#notificationModule .form-section {
+    margin: 24px auto 20px auto;
+    width: 100%;
+    max-width: 1100px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    padding: 20px 32px 20px 32px;
+    text-align: left;
+}
+#notificationOutput.notification-output {
+    text-align: left !important;
+    margin-left: 0 !important;
+    width: 100%;
+}
+
+@media (min-width: 769px) {
+  .module#notificationModule .form-section {
+    margin: 0 24px 20px 0;
+    width: calc(100% - 48px);
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .module#notificationModule .form-section {
+    max-width: 98vw;
+    padding: 16px 8px;
+    margin: 16px 1vw 16px 1vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .module#notificationModule .form-section {
+    max-width: 100vw;
+    padding: 8px 2px;
+    margin: 8px 0 8px 0;
+  }
+}
+
+.save-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #45a049;
+}
+
+.save-btn i {
+    font-size: 14px;
+}
+
+.inventory-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Sales Module Specific Styles */
+.order-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.order-fields input,
+.order-fields select {
+    width: 200px;
+    font-size: 13px;
+    padding: 6px 8px;
+    height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.order-fields label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.print-btn {
+    width: auto !important;
+    min-width: 80px !important;
+    padding: 6px 12px !important;
+    margin-top: 15px;
+}
+
+.save-order-btn {
+    width: 100%;
+    padding: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.save-order-btn:hover {
+    background-color: #45a049;
+}
+
+.receipt-section {
+    min-width: 280px;
+    max-width: 320px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.order-item-details {
+    flex: 1;
+}
+
+.order-item-total {
+    text-align: right;
+    font-weight: bold;
+}
+
+.receipt-total {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #eee;
+}
+
+.item-list-table {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#inventoryView table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+#inventoryView th,
+#inventoryView td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+#inventoryView th {
+    background-color: #f5f5f5;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#inventoryView tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.select-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select-btn:hover {
+    background-color: #45a049;
+}
+
+/* Custom Select2 Styles */
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 28px;
+    padding-left: 8px;
+    color: #333;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #999;
+}
+
+.select2-dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.select2-results__option {
+    padding: 8px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #4CAF50;
+}
+
+/* Ensure the selected value appears inside the input */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Sales Module Styles */
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-item-total {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.remove-btn:hover {
+    color: #cc0000;
+}
+
+#inventoryView table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#inventoryView th {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+    padding: 8px;
+    text-align: left;
+}
+
+#inventoryView td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+#inventoryView tr:hover {
+    background-color: #f9f9f9;
+}
+
+.receipt-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.receipt-total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #eee;
+}
+
+.payment-method {
+    margin: 15px 0;
+}
+
+.print-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.print-btn:hover {
+    background-color: #45a049;
+}
