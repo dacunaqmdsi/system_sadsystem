@@ -38,6 +38,8 @@
     <div class="section-title">Add New Inventory Item</div>
     <div class="form-row">
         <input type="text" placeholder="Product ID">
+        <input type="text" placeholder="Product Name">
+        <input type="text" placeholder="Color">
         <select>
             <option>Select Category</option>
         </select>

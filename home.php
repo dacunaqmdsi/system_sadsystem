@@ -309,6 +309,306 @@ if (isset($_SESSION['accountid'])) {
                 alert("User creation canceled.");
             }
         }
+
+
+        function submenu(id) {
+            switch (id) {
+                case 1:
+                    ajax_new('customer/customer.php', 'tmp_content');
+                    break;
+                case 2:
+                    ajax_new_to_load('pages/orders.php', 'tmp_content');
+                    break;
+                case 3:
+                    ajax_new_without_search('pages/inventory_product.php', 'tmp_content');
+                    break;
+
+            }
+        }
+
+
+        function add_edit_category(categoryid = null) {
+            var category = document.getElementById('category').value.trim();
+            if (!category) {
+                alert("Please input category");
+                return;
+            }
+
+            if (confirm(categoryid ? "Update this category?" : "Create this category?")) {
+                var formData = new FormData();
+                formData.append('category', category);
+                if (categoryid) {
+                    formData.append('edit_category', 1);
+                    formData.append('categoryid', categoryid);
+                } else {
+                    formData.append('add_category', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/category.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("category").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the category.");
+                    }
+                });
+            }
+        }
+
+        function add_edit_subcategory(subcategoryid = null) {
+            var subcategory = document.getElementById('subcategory').value.trim();
+            if (!subcategory) {
+                alert("Please input subcategory");
+                return;
+            }
+
+            if (confirm(subcategoryid ? "Update this subcategory?" : "Create this subcategory?")) {
+                var formData = new FormData();
+                formData.append('subcategory', subcategory);
+                if (subcategoryid) {
+                    formData.append('edit_subcategory', 1);
+                    formData.append('subcategoryid', subcategoryid);
+                } else {
+                    formData.append('add_subcategory', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/subcategory.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("subcategory").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the subcategory.");
+                    }
+                });
+            }
+        }
+
+
+        function add_edit_size(sizesid = null) {
+            var size = document.getElementById('size').value.trim();
+            if (!size) {
+                alert("Please input size");
+                return;
+            }
+
+            if (confirm(sizesid ? "Update this size?" : "Create this size?")) {
+                var formData = new FormData();
+                formData.append('size', size);
+                if (sizesid) {
+                    formData.append('edit_size', 1);
+                    formData.append('sizesid', sizesid);
+                } else {
+                    formData.append('add_size', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/sizes.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("size").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the size.");
+                    }
+                });
+            }
+        }
+
+
+        function add_edit_madefrom(madefromid = null) {
+            var madefrom = document.getElementById('madefrom').value.trim();
+            if (!madefrom) {
+                alert("Please input 'Made From' value");
+                return;
+            }
+
+            if (confirm(madefromid ? "Update this entry?" : "Create this entry?")) {
+                var formData = new FormData();
+                formData.append('madefrom', madefrom);
+                if (madefromid) {
+                    formData.append('edit_madefrom', 1);
+                    formData.append('madefromid', madefromid);
+                } else {
+                    formData.append('add_madefrom', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/madefrom.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("madefrom").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+        }
+
+        function add_edit_cooperative(madefromid = null) {
+            var madefrom = document.getElementById('madefrom').value.trim();
+            if (!madefrom) {
+                alert("Please input 'Made From' value");
+                return;
+            }
+
+            if (confirm(madefromid ? "Update this entry?" : "Create this entry?")) {
+                var formData = new FormData();
+                formData.append('madefrom', madefrom);
+                if (madefromid) {
+                    formData.append('edit_madefrom', 1);
+                    formData.append('madefromid', madefromid);
+                } else {
+                    formData.append('add_madefrom', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/madefrom.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("madefrom").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+        }
+
+        function add_edit_cooperative(cooperativeid = null) {
+            var cooperative = document.getElementById('cooperative').value.trim();
+            if (!cooperative) {
+                alert("Please input 'Cooperative' value");
+                return;
+            }
+
+            if (confirm(cooperativeid ? "Update this entry?" : "Create this entry?")) {
+                var formData = new FormData();
+                formData.append('cooperative', cooperative);
+                if (cooperativeid) {
+                    formData.append('edit_cooperative', 1);
+                    formData.append('cooperativeid', cooperativeid);
+                } else {
+                    formData.append('add_cooperative', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/cooperative.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("cooperative").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+        }
+
+
+        function add_edit_storage(storageid = null) {
+            var storage = document.getElementById('storage').value.trim();
+            if (!storage) {
+                alert("Please input 'Storage' value");
+                return;
+            }
+
+            if (confirm(storageid ? "Update this entry?" : "Create this entry?")) {
+                var formData = new FormData();
+                formData.append('storage', storage);
+                if (storageid) {
+                    formData.append('edit_storage', 1);
+                    formData.append('storageid', storageid);
+                } else {
+                    formData.append('add_storage', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/storage.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("storage").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+        }
+
+        function add_edit_unit(unitid = null) {
+            var unit = document.getElementById('unit').value.trim();
+            if (!unit) {
+                alert("Please input 'Unit' value");
+                return;
+            }
+
+            if (confirm(unitid ? "Update this entry?" : "Create this entry?")) {
+                var formData = new FormData();
+                formData.append('unit', unit);
+                if (unitid) {
+                    formData.append('edit_unit', 1);
+                    formData.append('unitid', unitid);
+                } else {
+                    formData.append('add_unit', 1);
+                }
+
+                $.ajax({
+                    url: 'submenu/unit.php',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#tmp_content").html(data);
+                        $("#tmp_content").css('opacity', '1');
+                        document.getElementById("unit").value = "";
+                    },
+                    error: function() {
+                        alert("Error occurred while saving the entry.");
+                    }
+                });
+            }
+        }
     </script>
 </head>
 

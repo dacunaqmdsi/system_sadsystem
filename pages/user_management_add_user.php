@@ -2,7 +2,6 @@
 
 <?php
 if (isset($_POST['add_user'])) {
-    // Escape all inputs
     $user_id = escape_str($db_connection, $_POST['user_id']);
     $last_name = escape_str($db_connection, $_POST['last_name']);
     $first_name = escape_str($db_connection, $_POST['first_name']);
@@ -24,6 +23,7 @@ if (isset($_POST['add_user'])) {
     )";
 
     if (mysqli_query($db_connection, $query)) {
+        Audit($_SESSION['accountid'], 'Added new user', 'Added new user');
         echo "User successfully added.";
     } else {
         echo "Error: " . mysqli_error($db_connection);
@@ -31,7 +31,6 @@ if (isset($_POST['add_user'])) {
 }
 
 if (isset($_POST['edit_user'])) {
-    // Escape all inputs
     $accountid = escape_str($db_connection, $_POST['accountid']);
     $user_id = escape_str($db_connection, $_POST['user_id']);
     $last_name = escape_str($db_connection, $_POST['last_name']);
@@ -60,6 +59,7 @@ if (isset($_POST['edit_user'])) {
         WHERE accountid = '$accountid'";
 
     if (mysqli_query($db_connection, $query)) {
+        Audit($_SESSION['accountid'], 'Update user', 'Update user');
         echo "User successfully updated.";
     } else {
         echo "Error: " . mysqli_error($db_connection);

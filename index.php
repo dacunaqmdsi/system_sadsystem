@@ -25,6 +25,7 @@ if (isset($_POST['signin']) && isset($_SESSION['token']) && $_SESSION['token'] =
         $_SESSION['accountid'] = $user['accountid'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['account_type'] = $user['account_type'];
+        Audit($user['accountid'], 'Login', 'Login');
         include('home.php');
         exit();
     } else {

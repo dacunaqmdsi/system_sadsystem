@@ -1,17 +1,19 @@
 <?php include('../includes/init.php'); ?>
 
 
-
-<h2>System Maintenance</h2>
-
 <div class="main-container">
-    <div class="section-title">Product Configuration</div>
-
-    <div class="inner-box">
-        <div class="inner-box-title">Product Management</div>
-        <button class="button" onclick="ajax_fn('submenu/submenu_maintenance','main_content');">Manage Items</button>
-        <button class="button" onclick="ajax_fn('pages/maintenance_prices','main_content');">Manage Prices</button>
-    </div>
+    <div class="section-title">Manage Prices</div>
+    <div align="right"><button onclick="ajax_fn('pages/maintenance','main_content');">Back</button></div>
+    <table>
+        <tr>
+            <th>Price</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>asdf</td>
+            <td>asdf</td>
+        </tr>
+    </table>
 </div>
 
 

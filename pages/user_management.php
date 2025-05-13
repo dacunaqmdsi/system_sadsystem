@@ -1,8 +1,6 @@
 <?php include('../includes/init.php'); ?>
 <h2>User Management</h2>
 <div class="main-container">
-
-    <!-- User List -->
     <div class="user-list">
         <div class="section-title">User List</div>
         <div class="search-box">
@@ -103,7 +101,6 @@
         }
         ?>
         <button class="btn" onclick="ajax_fn('pages/user_management.php','main_content');">Reset</button>
-        <!-- </form> -->
     </div>
 
 </div>
