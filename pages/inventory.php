@@ -1,3 +1,4 @@
+<?php include('../includes/init.php'); ?>
 <h2>Inventory Management</h2>
 
 <!-- Inventory List Section -->

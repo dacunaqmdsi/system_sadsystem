@@ -1,3 +1,4 @@
+<?php include('../includes/init.php'); ?>
 <h2>Reports</h2>
 
 <!-- System Logs -->

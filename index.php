@@ -17,12 +17,14 @@ if (isset($_POST['signin']) && isset($_SESSION['token']) && $_SESSION['token'] =
     $password = mysqli_real_escape_string($db_connection, $_POST['account_password']);
     // $password = secureData(mysqli_real_escape_string($db_connection, $_POST['accountpassword']));
 
-    $sql = "SELECT * FROM tblaccounts WHERE username='$username' AND account_password='$password' LIMIT 1";
+    $sql = "SELECT accountid, username, account_password, account_type FROM tblaccounts WHERE username='$username' AND account_password='$password' LIMIT 1";
     $rs = mysqli_query($db_connection, $sql);
 
     if ($rs && mysqli_num_rows($rs) === 1) {
         $user = mysqli_fetch_assoc($rs);
         $_SESSION['accountid'] = $user['accountid'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['account_type'] = $user['account_type'];
         include('home.php');
         exit();
     } else {
@@ -45,7 +47,7 @@ $_SESSION['token'] = rand(1, 100);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mary's Native Product Store System - Login</title>
-
+    <link rel="icon" type="image/png" href="images/log.png" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 

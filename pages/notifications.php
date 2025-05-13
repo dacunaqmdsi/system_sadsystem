@@ -1,3 +1,15 @@
+<?php include('../includes/init.php'); ?>
+
+
+<h2>Notifications</h2>
+
+<div class="notification-container">
+    <div class="section-title">System Notifications</div>
+    <div class="notification-box">
+        Notifications will appear here.
+    </div>
+</div>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -34,13 +46,3 @@
         color: #333;
     }
 </style>
-
-
-<h2>Notifications</h2>
-
-<div class="notification-container">
-    <div class="section-title">System Notifications</div>
-    <div class="notification-box">
-        Notifications will appear here.
-    </div>
-</div>

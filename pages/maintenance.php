@@ -1,3 +1,19 @@
+<?php include('../includes/init.php'); ?>
+
+
+
+<h2>System Maintenance</h2>
+
+<div class="main-container">
+    <div class="section-title">Product Configuration</div>
+
+    <div class="inner-box">
+        <div class="inner-box-title">Product Management</div>
+        <button class="button">Manage Items</button>
+        <button class="button">Manage Prices</button>
+    </div>
+</div>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -57,16 +73,3 @@
         background-color: #755b3b;
     }
 </style>
-
-
-<h2>System Maintenance</h2>
-
-<div class="main-container">
-    <div class="section-title">Product Configuration</div>
-
-    <div class="inner-box">
-        <div class="inner-box-title">Product Management</div>
-        <button class="button">Manage Items</button>
-        <button class="button">Manage Prices</button>
-    </div>
-</div>
