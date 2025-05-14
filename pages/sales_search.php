@@ -1,4 +1,4 @@
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 <table>
     <tr>
         <th>Product ID</th>

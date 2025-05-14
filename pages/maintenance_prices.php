@@ -1,4 +1,4 @@
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 <?php
 if (isset($_POST['add_inventory'])) {
     $inventory_id = mysqli_real_escape_string($db_connection, $_POST['inventory_id']);

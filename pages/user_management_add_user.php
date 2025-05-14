@@ -1,4 +1,4 @@
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 
 <?php
 if (isset($_POST['add_user'])) {
@@ -78,6 +78,9 @@ if (isset($_POST['edit_user'])) {
             <th>Age</th>
             <th>Email</th>
             <th>Contact #</th>
+            <th>Status</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -105,6 +108,20 @@ if (isset($_POST['edit_user'])) {
             echo "<td>" . htmlspecialchars($row['age']) . "</td>";
             echo "<td>" . htmlspecialchars($row['email_address']) . "</td>";
             echo "<td>" . htmlspecialchars($row['contact_number']) . "</td>";
+            $status = $row['is_blocked'] == 0 ? 'Active' : 'BLOCKED';
+            $toggle_to = $row['is_blocked'] == 0 ? 1 : 0;
+            $button_label = $row['is_blocked'] == 0 ? 'Block' : 'Unblock';
+
+            echo "<td><span id='tmp_up{$row['accountid']}'>$status</span></td>";
+            echo "<td>
+                            <a style='text-decoration: none; cursor:pointer;' 
+                            onclick=\"ajax_fn('pages/user_management_update.php?toggle_block=1&accountid={$row['accountid']}', 'tmp_up{$row['accountid']}');\">
+                            $button_label
+                            </a>
+                        </td>";
+            echo '<td>
+                            <a style="text-decoration: none;" href="javascript:void(0);" onclick="ajax_fn(\'pages/user_management.php?edit=1&accountid=' . $row['accountid'] . '\',\'main_content\');">Edit</a>
+                        </td>';
             echo "</tr>";
         }
         ?>

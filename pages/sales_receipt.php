@@ -3,7 +3,7 @@
     <button onclick="window.print()">Print Receipt</button>
 </div>
 
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 
 <style>
     @media print {

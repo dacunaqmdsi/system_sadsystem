@@ -1,4 +1,4 @@
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 <?php
 $_SESSION['tmp_order'] = 'tmp_order' . $_SESSION['accountid'];
 $result = mysqli_query($db_connection, 'DROP TABLE IF EXISTS ' . $_SESSION['tmp_order'] . '') or die(mysqli_error($db_connection));

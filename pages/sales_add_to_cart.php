@@ -1,4 +1,4 @@
-<?php include('../includes/init.php'); ?>
+<?php include('../includes/init.php'); is_blocked(); ?>
 <?php
 if (isset($_GET['inventory_id'])) {
     $inventory_id = $_GET['inventory_id'];
