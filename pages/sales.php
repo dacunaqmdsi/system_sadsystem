@@ -1,4 +1,21 @@
 <?php include('../includes/init.php'); ?>
+<?php
+$_SESSION['tmp_order'] = 'tmp_order' . $_SESSION['accountid'];
+$result = mysqli_query($db_connection, 'DROP TABLE IF EXISTS ' . $_SESSION['tmp_order'] . '') or die(mysqli_error($db_connection));
+$str = "CREATE TABLE " . $_SESSION['tmp_order'] . " (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`inventory_id` double DEFAULT 0,
+	`qty` double DEFAULT 0,
+	`puhunan` double DEFAULT 0,
+	`price` double DEFAULT 0,
+	`order_id` VARCHAR(128) DEFAULT '',
+	primary key(`id`) ) 
+ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+mysqli_query($db_connection, $str) or die(mysqli_error($db_connection));
+
+
+
+?>
 <h2>Sales</h2>
 <div class="sales-grid">
 
@@ -7,18 +24,18 @@
     <div class="card">
         <h3>Item Inquiry</h3>
         <div class="search-bar">
-            <input type="text" id="salesInventorySearch" placeholder="Search items..." />
-            <button class="search-icon"><i class="fas fa-search"></i></button>
+            <input type="text" id="str" onkeyup="ajax_fn('pages/sales_search.php?str='+document.getElementById('str').value,'inventoryView');" placeholder="Search items..." />
+            <button onclick="ajax_fn('pages/sales_search.php?str='+document.getElementById('str').value,'inventoryView');" class="search-icon"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
     <div class="card">
         <h3>Item List</h3>
-        <div class="inventory-box" id="inventoryView"></div>
+        <div class="inventory-box" id="inventoryView"><?php include('sales_search.php'); ?></div>
     </div>
 
     <!-- Bottom Row -->
-    <div class="card">
+    <div class="card" id="tmp_tmp">
         <h3>Order Details</h3>
         <p>Order ID: <span id="currentOrderId">ORD-0001</span></p>
 
@@ -47,23 +64,11 @@
 
     <div class="card">
         <h3>Receipt</h3>
-        <div id="orderItems"></div>
-
-        <div class="receipt-summary">
-            <p><strong>Total Amount: ₱<span id="totalAmount">0.00</span></strong></p>
-
-            <label>Payment Method</label>
-            <select id="paymentMethod">
-                <option value="Cash">Cash</option>
-                <option value="GCash">GCash</option>
-                <option value="Credit">Credit</option>
-            </select>
-
-            <div class="button-group">
-                <button class="btn green" onclick="printReceipt()">Print Receipt</button>
-                <button class="btn green" onclick="saveOrder()">Save Order</button>
-            </div>
+        <div id="orderItems">
+            <?php include('sales_order_it.php'); ?>
         </div>
+
+
     </div>
 
 </div>

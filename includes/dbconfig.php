@@ -1,6 +1,6 @@
 <?php
 echo $_SERVER['REQUEST_URI'];
-error_reporting(0);
+error_reporting(E_ALL);
 $hostname = 'localhost';
 $dbname   = 'inventory';
 $username = 'root';

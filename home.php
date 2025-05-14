@@ -45,16 +45,25 @@ if (isset($_SESSION['accountid'])) {
         body {
             overflow-x: hidden;
         }
-    </style>
-    <script>
-        function setActiveLink(el) {
-            // Select all nav links (adjust selector to match your structure)
-            const links = document.querySelectorAll('a[onclick*="ajax_fn"]');
 
-            links.forEach(link => link.classList.remove('active'));
-            el.classList.add('active');
+        /* Example: General active/hover styling for menu items */
+        .menu-items a.active,
+        .menu-items a:hover {
+            /* background-color: #1f2937; */
+            /* Example hover/active bg color */
+            color: #fff;
         }
 
+        /* Prevent Dashboard link from receiving active/hover style */
+        .menu-items a.no-active,
+        .menu-items a.no-active:hover,
+        .menu-items a.no-active.active {
+            background-color: transparent !important;
+            color: inherit !important;
+            cursor: pointer;
+        }
+    </style>
+    <script>
         function param(w, h) {
             var width = w;
             var height = h;
@@ -731,12 +740,170 @@ if (isset($_SESSION['accountid'])) {
                     success: function(data) {
                         $("#main_content").html(data); // Update the content on success
                         $("#main_content").css('opacity', '1');
+
                     },
                     error: function() {
                         alert("Error occurred while updating the inventory.");
                     }
                 });
             }
+        }
+
+        function insert_price_inv() {
+            var inventory_id = document.getElementById('inventory_id').value;
+            var price = document.getElementById('price').value;
+            var effective_date = document.getElementById('effective_date').value;
+            var effective_date_to = document.getElementById('effective_date_to').value;
+
+            // // Sample validation
+            if (!inventory_id || !price || !effective_date || !effective_date_to) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('inventory_id', inventory_id);
+            formData.append('price', price);
+            formData.append('effective_date', effective_date);
+            formData.append('effective_date_to', effective_date_to);
+            formData.append('add_inventory', 1);
+            if (confirm("Are you sure you want to add this price?")) {
+                $.ajax({
+                    url: 'pages/maintenance_prices.php', // The PHP file handling the request
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#main_content").html(data); // Update the content on success
+                        $("#main_content").css('opacity', '1');
+
+                    },
+                    error: function() {
+                        alert("Error occurred while updating the inventory.");
+                    }
+                });
+            }
+        }
+
+        function update_price_inv(price_id) {
+            var inventory_id = document.getElementById('inventory_id').value;
+            var price = document.getElementById('price').value;
+            var effective_date = document.getElementById('effective_date').value;
+            var effective_date_to = document.getElementById('effective_date_to').value;
+
+            // // Sample validation
+            if (!inventory_id || !price || !effective_date || !effective_date_to) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('inventory_id', inventory_id);
+            formData.append('price_id_modify', price_id);
+            formData.append('price', price);
+            formData.append('effective_date', effective_date);
+            formData.append('effective_date_to', effective_date_to);
+            formData.append('edit_inventory', 1);
+            if (confirm("Are you sure you want to update this price?")) {
+                $.ajax({
+                    url: 'pages/maintenance_prices.php', // The PHP file handling the request
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#main_content").html(data); // Update the content on success
+                        $("#main_content").css('opacity', '1');
+                        document.getElementById("inventory_id").value = "";
+                        document.getElementById("price").value = "";
+                        document.getElementById("effective_date").value = "";
+                        document.getElementById("effective_date_to").value = "";
+
+                    },
+                    error: function() {
+                        alert("Error occurred while updating the inventory.");
+                    }
+                });
+            }
+        }
+
+        function order_it(inventory_id) {
+            const qty = document.getElementById("qty").value;
+            const order_id = document.getElementById("order_id").value;
+            const puhunan = document.getElementById("puhunan").value;
+            const product_name = document.getElementById("product_name").value;
+            const effective_price = document.getElementById("effective_price").value;
+
+            if (!qty || qty == 0) {
+                alert("Please input QTY || Quantity must be greater than zero.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('qty', qty);
+            formData.append('order_id', order_id);
+            formData.append('puhunan', puhunan);
+            formData.append('effective_price', effective_price);
+            formData.append('product_name', product_name);
+            formData.append('inventory_id_edit', inventory_id);
+            // console.log(formData);
+            $.ajax({
+                url: 'pages/sales_order_it.php', // The PHP file handling the request
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $("#orderItems").html(data); // Update the content on success
+                    $("#orderItems").css('opacity', '1');
+                    document.getElementById("product_id").value = "";
+                    document.getElementById("categoryid").value = "";
+                    document.getElementById("subcategoryid").value = "";
+                    document.getElementById("sizesid").value = "";
+                    document.getElementById("unitid").value = "";
+                    document.getElementById("qty").value = "";
+
+                },
+                error: function() {
+                    alert("Error occurred while updating the inventory.");
+                }
+            });
+        }
+
+        function saveOrder() {
+            var payment_method = document.getElementById('payment_method').value;
+
+            // Check if the payment method is selected
+            if (!payment_method) {
+                alert("Please select payment method");
+                return;
+            }
+
+            // Confirm before proceeding
+            var confirmation = confirm("Are you sure you want to process this?");
+            if (!confirmation) {
+                return; // Stop the function if the user cancels
+            }
+
+            const formData = new FormData();
+            formData.append('payment_method', payment_method);
+
+            $.ajax({
+                url: 'pages/sales_order_it.php', // The PHP file handling the request
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $("#orderItems").html(data); // Update the content on success
+                    $("#orderItems").css('opacity', '1');
+                    // alert("Successfully Processed Request");
+                },
+                error: function() {
+                    alert("Error occurred while updating the inventory.");
+                }
+            });
         }
     </script>
 </head>
@@ -766,6 +933,13 @@ if (isset($_SESSION['accountid'])) {
             </div>
         </div>
 
+        <script>
+            function setActiveLink(el) {
+                const links = document.querySelectorAll('a[onclick*="ajax_fn"]');
+                links.forEach(link => link.classList.remove('active'));
+                el.classList.add('active');
+            }
+        </script>
 
         <nav id="navBar">
             <div class="logo-space">
@@ -774,7 +948,10 @@ if (isset($_SESSION['accountid'])) {
                 </div>
             </div>
             <div class="menu-items">
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/dashboard','main_content')"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+                <a href="javascript:void(0)" class="no-active" onclick="location.reload();">
+                    <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                </a>
+
                 <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/sales','main_content')"><i class="fa-solid fa-chart-line"></i><span>Sales</span></a>
                 <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/inventory','main_content')"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span></a>
                 <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/user_management','main_content')"><i class="fa-solid fa-users-gear"></i><span>User Management</span></a>

@@ -75,7 +75,7 @@ if (isset($_POST['add_inventory'])) {
 
 if (isset($_POST['update_inventory'])) {
     // Sanitize inputs
-    $inventory_id = mysqli_real_escape_string($db_connection, $_POST['inventory_id']);  // We use inventory_id for the update
+    $inventory_id_ = mysqli_real_escape_string($db_connection, $_POST['inventory_id']);  // We use inventory_id for the update
     $product_name = mysqli_real_escape_string($db_connection, $_POST['product_name']);
     $color = mysqli_real_escape_string($db_connection, $_POST['color']);
     $categoryid = $_POST['categoryid'];
@@ -128,7 +128,7 @@ if (isset($_POST['update_inventory'])) {
         current_stock = '$current_stock',
         new_stock = '$new_stock',
         total_stock = '$total_stock'
-    WHERE inventory_id = '$inventory_id'";
+    WHERE inventory_id = '$inventory_id_'";
 
     if (mysqli_query($db_connection, $update_query)) {
         Audit($user['accountid'], 'Update inventory', 'Inventory item updated successfully');
