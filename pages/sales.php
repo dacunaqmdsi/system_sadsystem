@@ -44,16 +44,16 @@ mysqli_query($db_connection, $str) or die(mysqli_error($db_connection));
             <input type="text" id="salesItemCode" readonly />
 
             <label>Category</label>
-            <select id="salesCategory"></select>
+            <input type="text" id="salesItemCode" readonly />
 
             <label>Subcategory</label>
-            <select id="salesSubcategory"></select>
+            <input type="text" id="salesItemCode" readonly />
 
             <label>Size</label>
-            <select id="salesSize"></select>
+            <input type="text" id="salesItemCode" readonly />
 
             <label>Unit</label>
-            <select id="salesUnit"></select>
+            <input type="text" id="salesItemCode" readonly />
 
             <label>Quantity</label>
             <input type="number" id="salesQuantity" />

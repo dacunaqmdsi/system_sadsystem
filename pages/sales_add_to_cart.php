@@ -42,7 +42,7 @@ $puhunan = GetValue('select cost_price from tblinventory where inventory_id=' . 
 <input type="text" hidden id="effective_price" value="<?php echo $effective_price; ?>" />
 <div class="form-group">
     <label>Item Code</label>
-    <input type="text" id="product_id" disabled value="<?php echo $category; ?>" />
+    <input type="text" id="product_id" disabled value="<?php echo $product_id; ?>" />
 
     <label>Category</label>
     <input type="text" id="categoryid" disabled value="<?php echo $category; ?>" />

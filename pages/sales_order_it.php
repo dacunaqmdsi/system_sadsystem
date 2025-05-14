@@ -2,7 +2,32 @@
 
 <?php
 
+if (isset($_GET['edit'])) {
+    $qty = $_GET['qty_'];
+    $id = $_GET['id_x'];
 
+    // Validate values
+    if (is_numeric($qty) && is_numeric($id)) {
+        $table = $_SESSION['tmp_order'];
+
+        // Validate table name to avoid injection
+        if (preg_match('/^[a-zA-Z0-9_]+$/', $table)) {
+            $stmt = mysqli_prepare($db_connection, "UPDATE `$table` SET qty = ? WHERE id = ?");
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "ii", $qty, $id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            } else {
+                // Handle statement preparation error
+                echo "Database error.";
+            }
+        } else {
+            echo "Invalid table name.";
+        }
+    } else {
+        echo "Invalid input.";
+    }
+}
 
 
 if (isset($_POST['payment_method'])) {
@@ -97,10 +122,12 @@ while ($rw = mysqli_fetch_array($rs)) {
 
     echo '<tr>
             <td>' . htmlspecialchars($pname) . '</td>
-            <td>' . htmlspecialchars($rw['qty']) . '</td>
+            <td><span id="tmp_p' . $rw['id'] . '">' . htmlspecialchars($rw['qty']) . '</span></td>
             <td style="text-align:right;">' . number_format((float)$rw['price'], 2) . '</td>
             <td   style="text-align:right;">' . number_format((float)$sub, 2) . '</td>
-            <td><button onclick="ajax_fn(\'pages/sales_order_it.php?del&id=' . $rw['id'] . '\',\'orderItems\');">Delete</button></td>
+            <td>
+             <button onclick="ajax_fn(\'pages/sales_order_it_edit?qty=' . $rw['qty'] . '&id=' . $rw['id'] . '\', \'tmp_p'.$rw['id'].'\');">Edit</button>
+            <button onclick="ajax_fn(\'pages/sales_order_it.php?del&id=' . $rw['id'] . '\',\'orderItems\');">Delete</button></td>
         </tr>';
 }
 echo '

@@ -24,10 +24,12 @@ while ($rw = mysqli_fetch_array($rs)) {
 
     echo ' <tr>
                                         <td>' . htmlspecialchars($pname) . '</td>
-                                        <td>' . htmlspecialchars($rw['qty']) . '</td>
+                                        <td><span id="tmp_p">' . htmlspecialchars($rw['qty']) . '</span></td>
                                         <td>' . number_format((float)$rw['price'], 2) . '</td>
                                         <td>' . number_format((float) $sub, 2) . '</td>
-                                        <td><button onclick="del(' . $rw['id'] . ', ' . $rw['$order_id'] . ');">Delete</button></td>
+                                        <td>
+                                           <button onclick="ajax_fn(\'pages/sales_order_it_edit?id=' . $rw['id'] . '\', \'tmp_p\');">Edit</button>
+                                        <button onclick="del(' . $rw['id'] . ', ' . $rw['$order_id'] . ');">Delete</button></td>
                                     </tr>';
 }
 
