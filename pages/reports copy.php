@@ -15,8 +15,7 @@
         <div class="report-buttons">
             <button class="button" onclick="openCustom('reports/system_logs?from1='+document.getElementById('from1').value
                                             +'&to1='+document.getElementById('to1').value,1000,1000);"><i class="fas fa-file-alt"></i> View Logs</button>
-            <!-- <button class="button" onclick="openCustom('reports/system_logs?from1='+document.getElementById('from1').value
-                                            +'&to1='+document.getElementById('to1').value,1000,1000);"><i class="fas fa-download"></i> PDF</button> -->
+            <button class="button"><i class="fas fa-download"></i> PDF</button>
         </div>
     </div>
 </div>
@@ -39,17 +38,17 @@
             ?>
         </select>
         <!-- <label>Sales Level:</label> -->
-        <select hidden id="sales2">
+        <!-- <select id="sales2">
             <option value="0">All Levels</option>
             <option value="High Sales">High Sales</option>
             <option value="Low Sales">Low Sales</option>
-        </select>
+        </select> -->
         <div class="report-buttons">
             <button class="button" onclick="openCustom('reports/sales_report?from2='+document.getElementById('from2').value
                                             +'&to2='+document.getElementById('to2').value
                                             +'&inventory_id='+document.getElementById('inventory_id').value
                                             +'&sales2='+document.getElementById('sales2').value,1000,1000);"><i class="fas fa-sync-alt"></i> Generate</button>
-            <!-- <button class="button"><i class="fas fa-download"></i> PDF</button> -->
+            <button class="button"><i class="fas fa-download"></i> PDF</button>
         </div>
     </div>
 </div>
@@ -79,7 +78,7 @@
             <button class="button" onclick="openCustom('reports/inventory_report?from3='+document.getElementById('from3').value
                                             +'&to3='+document.getElementById('to3').value
                                             +'&inventory_id2='+document.getElementById('inventory_id2').value, 1000,1000);"><i class="fas fa-sync-alt"></i> Generate</button>
-            <!-- <button class="button"><i class="fas fa-download"></i> PDF</button> -->
+            <button class="button"><i class="fas fa-download"></i> PDF</button>
         </div>
     </div>
 </div>

@@ -19,24 +19,21 @@ if (isset($_SESSION['accountid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mary's Native Product Store System</title>
     <link rel="icon" type="image/png" href="images/log.png" />
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome (only one latest version) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <!-- Favicon Icon -->
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-
-    <!-- Scripts -->
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 (optional, if you're using it) -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <!-- Select2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
-    <!-- Styles -->
+    <!-- Your CSS -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/styles.css" />
 
