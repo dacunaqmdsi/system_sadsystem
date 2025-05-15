@@ -1,4 +1,5 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
 <?php
 
 if (isset($_GET['edit'])) {
@@ -29,9 +30,30 @@ if (isset($_GET['edit'])) {
 }
 
 
+// if (isset($_POST['payment_method'])) {
+//     $payment_method = mysqli_real_escape_string($db_connection, $_POST['payment_method']);
+//     $rs = mysqli_query($db_connection, 'select order_id from ' . $_SESSION['tmp_order'] . ' ');
+//     $rw = mysqli_fetch_array($rs);
+
+//     mysqli_query($db_connection, "INSERT INTO tblsales (order_id, payment_method, processed_by)
+//         VALUES ('{$rw['order_id']}', '$payment_method', '{$_SESSION['accountid']}')");
+
+//     $sales_id_ = mysqli_insert_id($db_connection);
+
+//     $rs = mysqli_query($db_connection, 'SELECT * FROM ' . $_SESSION['tmp_order']);
+//     while ($rw = mysqli_fetch_array($rs)) {
+//         mysqli_query($db_connection, 'insert into tblsales_details set sales_id=\'' . $sales_id_  . '\'
+//                     ,inventory_id=\'' . $rw['inventory_id']  . '\'
+//                     ,qty=\'' . $rw['qty']   . '\' 
+//                      ,puhunan=\'' . $rw['puhunan']   . '\' 
+//                        ,price=\'' . $rw['price']   . '\'');
+//     }
+//     mysqli_query($db_connection, "DELETE FROM `{$_SESSION['tmp_order']}`");
+// }
+
 if (isset($_POST['payment_method'])) {
     $payment_method = mysqli_real_escape_string($db_connection, $_POST['payment_method']);
-    $rs = mysqli_query($db_connection, 'select order_id from ' . $_SESSION['tmp_order'] . ' ');
+    $rs = mysqli_query($db_connection, 'SELECT order_id FROM ' . $_SESSION['tmp_order']);
     $rw = mysqli_fetch_array($rs);
 
     mysqli_query($db_connection, "INSERT INTO tblsales (order_id, payment_method, processed_by)
@@ -41,14 +63,25 @@ if (isset($_POST['payment_method'])) {
 
     $rs = mysqli_query($db_connection, 'SELECT * FROM ' . $_SESSION['tmp_order']);
     while ($rw = mysqli_fetch_array($rs)) {
-        mysqli_query($db_connection, 'insert into tblsales_details set sales_id=\'' . $sales_id_  . '\'
-                    ,inventory_id=\'' . $rw['inventory_id']  . '\'
-                    ,qty=\'' . $rw['qty']   . '\' 
-                     ,puhunan=\'' . $rw['puhunan']   . '\' 
-                       ,price=\'' . $rw['price']   . '\'');
+        // Insert into sales details
+        mysqli_query($db_connection, 'INSERT INTO tblsales_details SET 
+            sales_id = \'' . $sales_id_  . '\',
+            inventory_id = \'' . $rw['inventory_id']  . '\',
+            qty = \'' . $rw['qty']   . '\', 
+            puhunan = \'' . $rw['puhunan']   . '\', 
+            price = \'' . $rw['price']   . '\'');
+
+        // Deduct from current stock and update date
+        mysqli_query($db_connection, "UPDATE tblinventory 
+            SET current_stock = current_stock - {$rw['qty']},
+                current_stock_date = NOW() 
+            WHERE inventory_id = '{$rw['inventory_id']}'");
     }
+
+    // Clear temporary order table
     mysqli_query($db_connection, "DELETE FROM `{$_SESSION['tmp_order']}`");
 }
+
 
 
 
@@ -125,7 +158,7 @@ while ($rw = mysqli_fetch_array($rs)) {
             <td style="text-align:right;">' . number_format((float)$rw['price'], 2) . '</td>
             <td   style="text-align:right;">' . number_format((float)$sub, 2) . '</td>
             <td>
-             <button onclick="ajax_fn(\'pages/sales_order_it_edit?qty=' . $rw['qty'] . '&id=' . $rw['id'] . '\', \'tmp_p'.$rw['id'].'\');">Edit</button>
+             <button onclick="ajax_fn(\'pages/sales_order_it_edit?qty=' . $rw['qty'] . '&id=' . $rw['id'] . '\', \'tmp_p' . $rw['id'] . '\');">Edit</button>
             <button onclick="ajax_fn(\'pages/sales_order_it.php?del&id=' . $rw['id'] . '\',\'orderItems\');">Delete</button></td>
         </tr>';
 }

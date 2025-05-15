@@ -1,4 +1,5 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
 
 <div class="module" id="dashboardModule">
     <h2>Dashboard</h2>
