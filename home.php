@@ -903,7 +903,51 @@ if (isset($_SESSION['accountid'])) {
             });
         }
     </script>
+    <style>
+        #notificationPopup {
+            display: none;
+            position: absolute;
+            top: 28px;
+            right: 0;
+            background: #222;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            width: 300px;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        #notificationPopup .notification-item {
+            border-bottom: 1px solid #444;
+            padding: 6px 0;
+        }
+    </style>
+    <script>
+        function toggleNotif() {
+            const popup = document.getElementById('notificationPopup');
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', e => {
+            const icon = document.querySelector('.notification-icon');
+            const popup = document.getElementById('notificationPopup');
+            if (!icon.contains(e.target) && !popup.contains(e.target)) {
+                popup.style.display = 'none';
+            }
+        });
+    </script>
 </head>
+<?php
+// Run this before the HTML so you can prepare notifications
+$rs = mysqli_query($db_connection, 'SELECT audit_id, activity, accountid, created_at FROM tblaudittrail ORDER BY created_at DESC LIMIT 5');
+$notifications = [];
+while ($row = mysqli_fetch_assoc($rs)) {
+    $notifications[] = $row;
+}
+$notifCount = count($notifications);
+?>
 
 <body>
     <!-- Dashboard Section (Login Removed) -->
@@ -914,9 +958,27 @@ if (isset($_SESSION['accountid'])) {
                 <b>Mary's Native Product Store System</b>
             </div>
             <div class="user-controls">
-                <div class="notification-icon" onclick="showNotifications()" style="cursor:pointer; position:relative;">
-                    <i class="fas fa-bell" style="color: #fff;"></i>
-                    <span id="notificationCount" style="position:absolute; top:-8px; right:-8px; background:#ff4444; color:white; border-radius:50%; padding:2px 6px; font-size:12px; display:none;">0</span>
+                <div class="notification-icon" style="position:relative; cursor:pointer;" onclick="toggleNotif()">
+                    <i class="fas fa-bell" style="color:#fff;"></i>
+                    <?php if ($notifCount > 0): ?>
+                        <span id="notificationCount" style="position:absolute; top:-8px; right:-8px; background:#f44; color:#fff; border-radius:50%; padding:2px 6px; font-size:12px;">
+                            <?= $notifCount ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <div id="notificationPopup">
+                    <strong>Notifications</strong>
+                    <?php if ($notifCount === 0): ?>
+                        <div class="notification-item">No new notifications</div>
+                    <?php else: ?>
+                        <?php foreach ($notifications as $notif): ?>
+                            <div class="notification-item">
+                                <?= htmlspecialchars($notif['activity']) ?><br>
+                                <small style="color:#bbb;"><?= date('Y-m-d H:i', strtotime($notif['created_at'])) ?></small>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="user-role">
                     <i class="fas fa-user"></i> <span id="userRoleText"><?php echo $_SESSION['username']; ?></span>
