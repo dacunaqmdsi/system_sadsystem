@@ -15,9 +15,13 @@ if (isset($_POST['signin']) && isset($_SESSION['token']) && $_SESSION['token'] =
 
     $username = mysqli_real_escape_string($db_connection, $_POST['username']);
     $password = mysqli_real_escape_string($db_connection, $_POST['account_password']);
-    // $password = secureData(mysqli_real_escape_string($db_connection, $_POST['accountpassword']));
+    $account_type = mysqli_real_escape_string($db_connection, $_POST['account_type']);  // new
 
-    $sql = "SELECT accountid, username, account_password, account_type FROM tblaccounts WHERE username='$username' AND account_password='$password' LIMIT 1";
+    $sql = "SELECT accountid, username, account_password, account_type 
+            FROM tblaccounts 
+            WHERE username='$username' AND account_password='$password' AND account_type='$account_type' 
+            LIMIT 1";
+
     $rs = mysqli_query($db_connection, $sql);
 
     if ($rs && mysqli_num_rows($rs) === 1) {
@@ -29,14 +33,16 @@ if (isset($_POST['signin']) && isset($_SESSION['token']) && $_SESSION['token'] =
         include('home.php');
         exit();
     } else {
-        $err = '<span style="color:red; font-size:16px;" class="fw-bold blink" >Invalid Username or Password</span>';
+        $err = '<span style="color:red; font-size:16px;" class="fw-bold blink" >Invalid Username, Password or Account Type</span>';
     }
 }
+
 if (isset($_SESSION['accountid'])) {
     include_once('includes/dbconfig.php');
     include('home.php');
     exit(0);
 }
+
 $_SESSION['token'] = rand(1, 100);
 ?>
 
@@ -98,9 +104,9 @@ $_SESSION['token'] = rand(1, 100);
                 <div class="form-group">
                     <label for="loginRole">Account Type</label>
                     <select name="account_type" id="loginRole" required>
-                        <option value="admin">System Admin</option>
-                        <option value="inventory">Inventory Personnel</option>
-                        <option value="cashier">Cashier</option>
+                        <option value="System Admin">System Admin</option>
+                        <option value="Inventory Personne">Inventory Personnel</option>
+                        <option value="Cashier">Cashier</option>
                     </select>
                 </div>
 
