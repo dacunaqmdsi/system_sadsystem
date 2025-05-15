@@ -1007,16 +1007,35 @@ $notifCount = count($notifications);
                 </div>
             </div>
             <div class="menu-items">
-                <a href="javascript:void(0)" class="no-active" onclick="location.reload();">
-                    <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
-                </a>
 
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/sales','main_content')"><i class="fa-solid fa-chart-line"></i><span>Sales</span></a>
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/inventory','main_content')"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span></a>
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/user_management','main_content')"><i class="fa-solid fa-users-gear"></i><span>User Management</span></a>
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/maintenance','main_content')"><i class="fa-solid fa-screwdriver-wrench"></i><span>Maintenance</span></a>
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/reports','main_content')"><i class="fa-solid fa-file-lines"></i><span>Reports</span></a>
-                <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/notifications.php','main_content')"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
+
+                <?php if ($_SESSION['account_type'] == 'System Admin') { ?>
+                    <a href="javascript:void(0)" class="no-active" onclick="location.reload();">
+                        <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/sales','main_content')"><i class="fa-solid fa-chart-line"></i><span>Sales</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/inventory','main_content')"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/user_management','main_content')"><i class="fa-solid fa-users-gear"></i><span>User Management</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/maintenance','main_content')"><i class="fa-solid fa-screwdriver-wrench"></i><span>Maintenance</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/reports','main_content')"><i class="fa-solid fa-file-lines"></i><span>Reports</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/notifications.php','main_content')"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
+
+                <?php } else if ($_SESSION['account_type'] == 'Inventory Personnel') { ?>
+                    <a href="javascript:void(0)" class="no-active" onclick="location.reload();">
+                        <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/inventory','main_content')"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span></a>
+
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/notifications.php','main_content')"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
+
+                <?php } else { ?>
+                    <a href="javascript:void(0)" class="no-active" onclick="location.reload();">
+                        <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/sales','main_content')"><i class="fa-solid fa-chart-line"></i><span>Sales</span></a>
+                    <a href="javascript:void(0)" onclick="setActiveLink(this); ajax_fn('pages/notifications.php','main_content')"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
+
+                <?php } ?>
             </div>
         </nav>
 

@@ -1,4 +1,15 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
+<!-- <th>Made From</th>
+<th>Cooperative</th>
+<th>Quantity Available</th>
+<th>Reorder Threshold</th>
+<th>Storage Location</th>
+<th>Cost Price</th>
+<th>Retail Price</th>
+<th>Unit</th>
+<th>New Stock</th>
+<th>Total Stock</th> -->
 <table>
     <tr>
         <th>Product ID</th>
@@ -7,17 +18,9 @@
         <th>Category</th>
         <th>Subcategory</th>
         <th>Size</th>
-        <th>Made From</th>
-        <th>Cooperative</th>
-        <th>Quantity Available</th>
-        <th>Reorder Threshold</th>
-        <th>Storage Location</th>
-        <th>Cost Price</th>
-        <th>Retail Price</th>
-        <th>Unit</th>
+
         <th>Current Stock</th>
-        <th>New Stock</th>
-        <th>Total Stock</th>
+
         <th><b>PRICE</b></th>
         <th>Action</th>
     </tr>
@@ -91,17 +94,7 @@
             <td>" . htmlspecialchars($row['category']) . "</td>
             <td>" . htmlspecialchars($row['subcategory']) . "</td>
             <td>" . htmlspecialchars($row['size']) . "</td>
-            <td>" . htmlspecialchars($row['madefrom']) . "</td>
-            <td>" . htmlspecialchars($row['cooperative']) . "</td>
-            <td>" . htmlspecialchars($row['qty_available']) . "</td>
-            <td>" . htmlspecialchars($row['reorder_threshold']) . "</td>
-            <td>" . htmlspecialchars($row['storage']) . "</td>
-            <td>" . htmlspecialchars($row['cost_price']) . "</td>
-            <td>" . htmlspecialchars($row['retail_price']) . "</td>
-            <td>" . htmlspecialchars($row['unit']) . "</td>
             <td>" . htmlspecialchars($row['current_stock']) . "</td>
-            <td>" . htmlspecialchars($row['new_stock']) . "</td>
-            <td>" . htmlspecialchars($row['total_stock']) . "</td>
             <td><b>" . number_format($row['effective_price'], 2) . "</b></td>
             <td>
             <button onclick=\"ajax_fn('pages/sales_add_to_cart.php?effective_price=" . urlencode($row['effective_price']) . "&inventory_id=" . urlencode($row['inventory_id']) . "', 'tmp_tmp');\">

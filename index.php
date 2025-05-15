@@ -105,7 +105,7 @@ $_SESSION['token'] = rand(1, 100);
                     <label for="loginRole">Account Type</label>
                     <select name="account_type" id="loginRole" required>
                         <option value="System Admin">System Admin</option>
-                        <option value="Inventory Personne">Inventory Personnel</option>
+                        <option value="Inventory Personnel">Inventory Personnel</option>
                         <option value="Cashier">Cashier</option>
                     </select>
                 </div>
