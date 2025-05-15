@@ -973,33 +973,36 @@ if (isset($_SESSION['accountid'])) {
 
 
 
-
-
-
+            <script>
+                function change_it_view(vall) {
+                    let url = 'get_total_sales.php?vall=' + vall;
+                    ajax_fn(url, 'tm');
+                }
+            </script>
 
             <div class="module" id="dashboardModule">
                 <h2>Dashboard</h2>
 
                 <!-- Dashboard Filters -->
                 <div class="dashboard-filter">
-                    <select id="dashboardDateFilter" onchange="updateDashboard()">
+                    <select id="dashboardDateFilter" onchange="change_it_view(this.value);">
                         <option value="today">Today</option>
                         <option value="week">This Week</option>
                         <option value="month">This Month</option>
                         <option value="year">This Year</option>
-                        <option value="custom">Custom Range</option>
                     </select>
-                    <input type="date" id="dashboardStartDate" onchange="updateDashboard()">
-                    <input type="date" id="dashboardEndDate" onchange="updateDashboard()">
+                    <input type="date" id="dashboardStartDate" onchange="updateDashboard()" style="display: none;">
+                    <input type="date" id="dashboardEndDate" onchange="updateDashboard()" style="display: none;">
                 </div>
-
                 <!-- Metrics Grid -->
                 <div class="metrics-grid">
                     <div class="metric-card">
                         <h3>Total Sales</h3>
-                        <div class="metric-value">₱<span id="totalSalesValue">
-                                <?php echo Number(GetValue('select SUM(qty * price) from tblsales_details ')); ?>
-                            </span></div>
+                        <div class="metric-value">₱
+                            <span id="tm">
+                                <?php echo Number(GetValue('select SUM(a.qty * a.price) from tblsales_details a, tblsales b where a.sales_id=b.sales_id ')); ?>
+                            </span>
+                        </div>
                         <!-- <div class="metric-trend">↑ 12% from last period</div> -->
                     </div>
                     <div class="metric-card">
@@ -1019,20 +1022,21 @@ if (isset($_SESSION['accountid'])) {
                 </div>
 
 
+
                 <?php
                 $salesData = [];
                 $result = mysqli_query($db_connection, "
-                SELECT 
-                    s.order_id,
-                    DATE(s.created_at) as sale_date,
-                    GROUP_CONCAT(i.product_name SEPARATOR ', ') AS items,
-                    SUM(d.qty * d.price) AS total
-                FROM tblsales s
-                JOIN tblsales_details d ON s.sales_id = d.sales_id
-                JOIN tblinventory i ON d.inventory_id = i.inventory_id
-                GROUP BY s.order_id, sale_date
-                ORDER BY sale_date ASC
-            ");
+                        SELECT 
+                            s.order_id,
+                            DATE(s.created_at) as sale_date,
+                            GROUP_CONCAT(i.product_name SEPARATOR ', ') AS items,
+                            SUM(d.qty * d.price) AS total
+                        FROM tblsales s
+                        JOIN tblsales_details d ON s.sales_id = d.sales_id
+                        JOIN tblinventory i ON d.inventory_id = i.inventory_id
+                        GROUP BY s.order_id, sale_date
+                        ORDER BY sale_date ASC
+                    ");
 
                 while ($row = mysqli_fetch_assoc($result)) {
                     $salesData[] = [
@@ -1047,10 +1051,11 @@ if (isset($_SESSION['accountid'])) {
                     <div class="chart-card">
                         <h3>Sales Overview</h3>
                         <div class="chart-filters">
-                            <button class="chart-filter-btn active" onclick="updateSalesChart('weekly')">Weekly</button>
-                            <button class="chart-filter-btn" onclick="updateSalesChart('monthly')">Monthly</button>
-                            <button class="chart-filter-btn" onclick="updateSalesChart('yearly')">Yearly</button>
+                            <button class="chart-filter-btn active" onclick="handleChartFilterClick(this, 'weekly')">Weekly</button>
+                            <button class="chart-filter-btn" onclick="handleChartFilterClick(this, 'monthly')">Monthly</button>
+                            <button class="chart-filter-btn" onclick="handleChartFilterClick(this, 'yearly')">Yearly</button>
                         </div>
+
                         <canvas id="salesOverviewChart"></canvas>
 
                     </div>
@@ -1263,6 +1268,17 @@ if (isset($_SESSION['accountid'])) {
 
 
     <script>
+        function handleChartFilterClick(button, range) {
+            // Remove 'active' class from all buttons
+            document.querySelectorAll('.chart-filter-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+
+            // Update chart
+            updateSalesChart(range);
+        }
+
         const rawSalesData = <?php echo json_encode($salesData); ?>;
 
         // Convert to format Chart.js expects
@@ -1302,14 +1318,13 @@ if (isset($_SESSION['accountid'])) {
             }
         });
 
-        // Button Filter (basic example)
         function updateSalesChart(range) {
             let filteredData = [...rawSalesData];
-
             const now = new Date();
 
             if (range === 'weekly') {
-                const weekAgo = new Date(now.setDate(now.getDate() - 7));
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
                 filteredData = rawSalesData.filter(d => new Date(d.date) >= weekAgo);
             } else if (range === 'monthly') {
                 const monthAgo = new Date();
@@ -1324,10 +1339,6 @@ if (isset($_SESSION['accountid'])) {
             salesChart.data.labels = filteredData.map(row => row.date);
             salesChart.data.datasets[0].data = filteredData.map(row => parseFloat(row.total));
             salesChart.update();
-
-            // Toggle button styles
-            document.querySelectorAll('.chart-filter-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.chart-filter-btn[onclick="updateSalesChart('${range}')"]`).classList.add('active');
         }
     </script>
 
