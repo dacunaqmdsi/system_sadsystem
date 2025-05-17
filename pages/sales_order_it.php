@@ -61,25 +61,62 @@ if (isset($_POST['payment_method'])) {
 
     $sales_id_ = mysqli_insert_id($db_connection);
 
-    $rs = mysqli_query($db_connection, 'SELECT * FROM ' . $_SESSION['tmp_order']);
-    while ($rw = mysqli_fetch_array($rs)) {
-        // Insert into sales details
-        mysqli_query($db_connection, 'INSERT INTO tblsales_details SET 
-            sales_id = \'' . $sales_id_  . '\',
-            inventory_id = \'' . $rw['inventory_id']  . '\',
-            qty = \'' . $rw['qty']   . '\', 
-            puhunan = \'' . $rw['puhunan']   . '\', 
-            price = \'' . $rw['price']   . '\'');
+    // Audit log for inserting main sales record
+    Audit($_SESSION['accountid'], 'Processed Sales', 'Inserted main sales record - Sales ID: ' . $sales_id_);
 
-        // Deduct from current stock and update date
-        mysqli_query($db_connection, "UPDATE tblinventory 
-            SET current_stock = current_stock - {$rw['qty']},
-                current_stock_date = NOW() 
-            WHERE inventory_id = '{$rw['inventory_id']}'");
+    $rs = mysqli_query($db_connection, 'SELECT * FROM ' . $_SESSION['tmp_order']);
+    $has_error = false;
+
+    while ($rw = mysqli_fetch_array($rs)) {
+        $inventory_id = $rw['inventory_id'];
+        $qty_ordered = $rw['qty'];
+
+        // Get current stock
+        $stock_result = mysqli_query($db_connection, "SELECT current_stock FROM tblinventory WHERE inventory_id = '$inventory_id'");
+        $stock_row = mysqli_fetch_assoc($stock_result);
+        $current_stock = $stock_row['current_stock'];
+
+        if ($qty_ordered > $current_stock) {
+            echo "<div class='alert alert-danger'>Error: Quantity ordered ({$qty_ordered}) exceeds available stock ({$current_stock}) for item ID {$inventory_id}.</div>";
+            $has_error = true;
+            break;
+        }
     }
 
-    // Clear temporary order table
-    mysqli_query($db_connection, "DELETE FROM `{$_SESSION['tmp_order']}`");
+    if (!$has_error) {
+        mysqli_data_seek($rs, 0); // Reset result pointer
+
+        while ($rw = mysqli_fetch_array($rs)) {
+            $inventory_id = $rw['inventory_id'];
+            $qty_ordered = $rw['qty'];
+
+            // Insert into sales details
+            mysqli_query($db_connection, "INSERT INTO tblsales_details SET 
+                sales_id = '$sales_id_',
+                inventory_id = '$inventory_id',
+                qty = '$qty_ordered', 
+                puhunan = '{$rw['puhunan']}', 
+                price = '{$rw['price']}'");
+
+            // Audit log for each item
+            Audit($_SESSION['accountid'], "Process Sales: Inserted sales detail for Inventory ID: $inventory_id, Qty: $qty_ordered", "Inserted sales detail for Inventory ID: $inventory_id, Qty: $qty_ordered");
+
+            // Update inventory
+            mysqli_query($db_connection, "UPDATE tblinventory 
+                SET current_stock = current_stock - $qty_ordered,
+                    current_stock_date = NOW() 
+                WHERE inventory_id = '$inventory_id'");
+
+            // Audit log for inventory update
+            Audit($_SESSION['accountid'], 'Processed Sales', "Updated stock for Inventory ID: $inventory_id, Deducted: $qty_ordered");
+        }
+
+        // Clear temporary order table
+        mysqli_query($db_connection, "DELETE FROM {$_SESSION['tmp_order']}");
+        Audit($_SESSION['accountid'], 'Processed Sales', 'Cleared temporary order table: ' . $_SESSION['tmp_order']);
+
+        echo "<div class='alert alert-success'>Order processed successfully.</div>";
+    }
 }
 
 
@@ -158,8 +195,13 @@ while ($rw = mysqli_fetch_array($rs)) {
             <td style="text-align:right;">' . number_format((float)$rw['price'], 2) . '</td>
             <td   style="text-align:right;">' . number_format((float)$sub, 2) . '</td>
             <td>
-             <button onclick="ajax_fn(\'pages/sales_order_it_edit?qty=' . $rw['qty'] . '&id=' . $rw['id'] . '\', \'tmp_p' . $rw['id'] . '\');">Edit</button>
-            <button onclick="ajax_fn(\'pages/sales_order_it.php?del&id=' . $rw['id'] . '\',\'orderItems\');">Delete</button></td>
+<button class="icon-btn" onclick="ajax_fn(\'pages/sales_order_it_edit?qty=' . $rw['qty'] . '&id=' . $rw['id'] . '\', \'tmp_p' . $rw['id'] . '\')" title="Edit">
+    <i class="fas fa-edit"></i>
+</button>
+<button class="icon-btn delete-btn" onclick="ajax_fn(\'pages/sales_order_it.php?del&id=' . $rw['id'] . '\',\'orderItems\')" title="Delete">
+    <i class="fas fa-trash"></i>
+</button>
+
         </tr>';
 }
 echo '

@@ -41,15 +41,18 @@
                         $button_label = $row['is_blocked'] == 0 ? 'Block' : 'Unblock';
 
                         echo "<td><span id='tmp_up{$row['accountid']}'>$status</span></td>";
-                        echo "<td>
-                            <a style='text-decoration: none; cursor:pointer;' 
-                            onclick=\"ajax_fn('pages/user_management_update.php?toggle_block=1&accountid={$row['accountid']}', 'tmp_up{$row['accountid']}');\">
-                            $button_label
-                            </a>
-                        </td>";
-                        echo '<td>
-                            <a style="text-decoration: none;" href="javascript:void(0);" onclick="ajax_fn(\'pages/user_management.php?edit=1&accountid=' . $row['accountid'] . '\',\'main_content\');">Edit</a>
-                        </td>';
+                     echo "<td>
+    <button class='icon-btn' onclick=\"ajax_fn('pages/user_management_update.php?toggle_block=1&accountid={$row['accountid']}', 'tmp_up{$row['accountid']}')\" title=\"{$button_label}\">
+        <i class='fas fa-user-lock'></i>
+    </button>
+</td>";
+
+echo "<td>
+    <button class='icon-btn' onclick=\"ajax_fn('pages/user_management.php?edit=1&accountid={$row['accountid']}', 'main_content')\" title=\"Edit User\">
+        <i class='fas fa-edit'></i>
+    </button>
+</td>";
+
                         echo "</tr>";
                     }
                     ?>
@@ -57,6 +60,26 @@
             </table>
         </div>
     </div>
+<style>
+.icon-btn {
+    background-color: #8b7455;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+    background-color: #7a664a;
+}
+
+.icon-btn i {
+    font-size: 16px;
+}
+</style>
 
     <?php
     if (isset($_GET['edit'])) {
@@ -121,93 +144,126 @@
 </div>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f2e8;
-        margin: 0;
-        padding: 20px;
-    }
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f2e8;
+    margin: 0;
+    padding: 20px;
+}
 
-    h2 {
-        color: #333;
-    }
+h2 {
+    color: #333;
+}
 
-    .main-container {
-        display: flex;
-        justify-content: space-between;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.user-list,
+.create-user {
+    flex: 1 1 100%;
+}
+
+@media (min-width: 768px) {
     .user-list,
     .create-user {
-        width: 48%;
+        flex: 1 1 48%;
     }
+}
 
-    .section-title {
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 10px;
+.section-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.form-row > div {
+    flex: 1 1 100%;
+}
+
+@media (min-width: 600px) {
+    .form-row > div {
+        flex: 1 1 48%;
     }
+}
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"],
-    select {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 100%;
-        box-sizing: border-box;
-    }
+.btn {
+    padding: 10px 15px;
+    background-color: #8B6B4A;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 14px;
+}
 
-    .form-row {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .form-row>div {
-        flex: 1;
-    }
-
+@media (min-width: 600px) {
     .btn {
-        padding: 10px 15px;
-        background-color: #8B6B4A;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+        width: auto;
     }
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    overflow-x: auto;
+}
 
-    th,
-    td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+th {
+    background-color: #f2f2f2;
+}
 
-    .search-box {
-        margin-bottom: 10px;
-    }
+.search-box {
+    margin-bottom: 10px;
+}
 
-    .search-box input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+.search-box input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#tmp_user_add {
+    overflow-x: auto;
+}
+
 </style>

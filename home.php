@@ -635,6 +635,7 @@ if (isset($_SESSION['accountid'])) {
             const current_stock = document.getElementById('current_stock').value;
             const new_stock = document.getElementById('new_stock').value;
             const total_stock = document.getElementById('total_stock').value;
+            const current_stock_date = document.getElementById('current_stock_date').value;
 
             // // Sample validation
             // if (!product_id || !product_name || !categoryid || !subcategoryid || !unitid) {
@@ -661,6 +662,7 @@ if (isset($_SESSION['accountid'])) {
             formData.append('current_stock', current_stock);
             formData.append('new_stock', new_stock);
             formData.append('total_stock', total_stock);
+            formData.append('current_stock_date', current_stock_date);
             formData.append('add_inventory', 1);
 
 
@@ -703,6 +705,7 @@ if (isset($_SESSION['accountid'])) {
             const current_stock = document.getElementById('current_stock').value;
             const new_stock = document.getElementById('new_stock').value;
             const total_stock = document.getElementById('total_stock').value;
+            const current_stock_date = document.getElementById('current_stock_date').value;
 
             // Create FormData object for the update request
             const formData = new FormData();
@@ -724,6 +727,7 @@ if (isset($_SESSION['accountid'])) {
             formData.append('current_stock', current_stock);
             formData.append('new_stock', new_stock);
             formData.append('total_stock', total_stock);
+            formData.append('current_stock_date', current_stock_date);
             formData.append('update_inventory', 1); // Indicate update operation
 
             // Confirmation before proceeding with the update
@@ -1006,7 +1010,7 @@ $notifCount = count($notifications);
                     <img src="images/logo2.jpg" alt="Mary's Native Product Store Logo" class="logo">
                 </div>
             </div>
-            <div class="menu-items">
+            <div class="menu-items" style="margin-top:-20px;">
 
 
                 <?php if ($_SESSION['account_type'] == 'System Admin') { ?>
@@ -1053,11 +1057,27 @@ $notifCount = count($notifications);
 
 
 
-
             <script>
                 function change_it_view(vall) {
-                    let url = 'get_total_sales.php?vall=' + vall;
-                    ajax_fn(url, 'tm');
+                    if (vall === 'custom') {
+                        document.getElementById('dashboardStartDate').style.display = 'inline-block';
+                        document.getElementById('dashboardEndDate').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('dashboardStartDate').style.display = 'none';
+                        document.getElementById('dashboardEndDate').style.display = 'none';
+                        let url = 'get_total_sales.php?vall=' + vall;
+                        ajax_fn(url, 'tm');
+                    }
+                }
+
+                function updateDashboard() {
+                    let start = document.getElementById('dashboardStartDate').value;
+                    let end = document.getElementById('dashboardEndDate').value;
+
+                    if (start && end) {
+                        let url = `get_total_sales.php?vall=custom&start=${start}&end=${end}`;
+                        ajax_fn(url, 'tm');
+                    }
                 }
             </script>
 
@@ -1071,6 +1091,7 @@ $notifCount = count($notifications);
                         <option value="week">This Week</option>
                         <option value="month">This Month</option>
                         <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
                     </select>
                     <input type="date" id="dashboardStartDate" onchange="updateDashboard()" style="display: none;">
                     <input type="date" id="dashboardEndDate" onchange="updateDashboard()" style="display: none;">
@@ -1422,6 +1443,28 @@ $notifCount = count($notifications);
             salesChart.update();
         }
     </script>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            const formattedTime = now.toLocaleString('en-US', options);
+            document.getElementById('clock').textContent = formattedTime;
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock(); // Initial call
+    </script>
+
 
 </body>
 

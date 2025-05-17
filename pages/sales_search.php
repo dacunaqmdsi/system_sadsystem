@@ -97,10 +97,29 @@ is_blocked(); ?>
             <td>" . htmlspecialchars($row['current_stock']) . "</td>
             <td><b>" . number_format($row['effective_price'], 2) . "</b></td>
             <td>
-            <button onclick=\"ajax_fn('pages/sales_add_to_cart.php?effective_price=" . urlencode($row['effective_price']) . "&inventory_id=" . urlencode($row['inventory_id']) . "', 'tmp_tmp');\">
-                Select
+            <button  class='icon-btn' onclick=\"ajax_fn('pages/sales_add_to_cart.php?effective_price=" . urlencode($row['effective_price']) . "&inventory_id=" . urlencode($row['inventory_id']) . "', 'tmp_tmp');\">
+                 <i class='fas fa-cart-plus'></i>
             </button>
         </td> </tr>";
     }
     ?>
 </table>
+<style>
+.icon-btn {
+    background-color: #8b7455;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+    background-color: #7a664a;
+}
+
+.icon-btn i {
+    font-size: 16px;
+}
+</style>

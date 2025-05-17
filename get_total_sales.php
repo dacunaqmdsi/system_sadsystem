@@ -1,7 +1,7 @@
 <?php
 include('includes/dbconfig.php');
 
-function getSalesQuery($filter)
+function getSalesQuery($filter, $start = null, $end = null)
 {
     switch ($filter) {
         case 'today':
@@ -12,6 +12,10 @@ function getSalesQuery($filter)
             return "AND MONTH(b.created_at) = MONTH(CURDATE()) AND YEAR(b.created_at) = YEAR(CURDATE())";
         case 'year':
             return "AND YEAR(b.created_at) = YEAR(CURDATE())";
+        case 'custom':
+            if ($start && $end) {
+                return "AND DATE(b.created_at) BETWEEN '$start' AND '$end'";
+            }
         default:
             return "";
     }
@@ -19,14 +23,16 @@ function getSalesQuery($filter)
 
 if (isset($_GET['vall'])) {
     $filter = $_GET['vall'];
-    $condition = "";
-    $condition = getSalesQuery($filter);
+    $start = $_GET['start'] ?? null;
+    $end = $_GET['end'] ?? null;
+
+    $condition = getSalesQuery($filter, $start, $end);
 
     $sql = "SELECT SUM(a.qty * a.price) AS total 
             FROM tblsales_details a 
             JOIN tblsales b ON a.sales_id = b.sales_id 
             WHERE b.is_void = 0 $condition";
-    // echo $sql;
+
     $result = $db_connection->query($sql);
     $row = $result->fetch_assoc();
     echo number_format($row['total'] ?? 0, 2);

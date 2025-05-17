@@ -1,4 +1,5 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
 <?php
 $_SESSION['tmp_order'] = 'tmp_order' . $_SESSION['accountid'];
 $result = mysqli_query($db_connection, 'DROP TABLE IF EXISTS ' . $_SESSION['tmp_order'] . '') or die(mysqli_error($db_connection));
@@ -18,8 +19,6 @@ mysqli_query($db_connection, $str) or die(mysqli_error($db_connection));
 ?>
 <h2>Sales</h2>
 <div class="sales-grid">
-
-
     <!-- Top Row -->
     <div class="card">
         <h3>Item Inquiry</h3>

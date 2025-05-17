@@ -1,4 +1,5 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
 <?php
 if (isset($_POST['add_inventory'])) {
     // Sanitize inputs
@@ -53,16 +54,17 @@ if (isset($_POST['add_inventory'])) {
     $current_stock = $_POST['current_stock'];
     $new_stock = $_POST['new_stock'];
     $total_stock = $_POST['total_stock'];
+    $current_stock_date = $_POST['current_stock_date'];
 
     // Perform insert
     $query = "INSERT INTO tblinventory (
         product_id, product_name, color, categoryid, subcategoryid, sizesid,
         madefromid, cooperativeid, qty_available, reorder_threshold, storageid,
-        cost_price, retail_price, unitid, current_stock, new_stock, total_stock
+        cost_price, retail_price, unitid, current_stock, new_stock, total_stock, current_stock_date
     ) VALUES (
         '$generated_product_id', '$product_name', '$color', '$categoryid', '$subcategoryid', '$sizesid',
         '$madefromid', '$cooperativeid', '$qty_available', '$reorder_threshold', '$storageid',
-        '$cost_price', '$retail_price', '$unitid', '$current_stock', '$new_stock', '$total_stock'
+        '$cost_price', '$retail_price', '$unitid', '$current_stock', '$new_stock', '$total_stock', '$current_stock_date'
     )";
 
     if (mysqli_query($db_connection, $query)) {
@@ -72,10 +74,9 @@ if (isset($_POST['add_inventory'])) {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($db_connection) . "</div>";
     }
 }
-
 if (isset($_POST['update_inventory'])) {
     // Sanitize inputs
-    $inventory_id_ = mysqli_real_escape_string($db_connection, $_POST['inventory_id']);  // We use inventory_id for the update
+    $inventory_id_ = mysqli_real_escape_string($db_connection, $_POST['inventory_id']);
     $product_name = mysqli_real_escape_string($db_connection, $_POST['product_name']);
     $color = mysqli_real_escape_string($db_connection, $_POST['color']);
     $categoryid = $_POST['categoryid'];
@@ -97,7 +98,6 @@ if (isset($_POST['update_inventory'])) {
     $size_row = mysqli_fetch_assoc($size_result);
     $size_name = $size_row['size'] ?? '';
 
-    // Update the inventory item but leave product_id unchanged
     $madefromid = $_POST['madefromid'];
     $cooperativeid = $_POST['cooperativeid'];
     $qty_available = $_POST['qty_available'];
@@ -106,11 +106,19 @@ if (isset($_POST['update_inventory'])) {
     $cost_price = $_POST['cost_price'];
     $retail_price = $_POST['retail_price'];
     $unitid = $_POST['unitid'];
-    $current_stock = $_POST['current_stock'];
-    $new_stock = $_POST['new_stock'];
+    $new_stock = (int) $_POST['new_stock'];
     $total_stock = $_POST['total_stock'];
+    $current_stock_date = $_POST['current_stock_date'];
 
-    // Perform update
+    // Get existing current stock
+    $stock_result = mysqli_query($db_connection, "SELECT current_stock FROM tblinventory WHERE inventory_id = '$inventory_id_'");
+    $stock_row = mysqli_fetch_assoc($stock_result);
+    $current_stock_old = (int) ($stock_row['current_stock'] ?? 0);
+
+    // Add new stock to current stock
+    $updated_current_stock = $current_stock_old + $new_stock;
+
+    // Update query
     $update_query = "UPDATE tblinventory SET 
         product_name = '$product_name',
         color = '$color',
@@ -125,9 +133,10 @@ if (isset($_POST['update_inventory'])) {
         cost_price = '$cost_price',
         retail_price = '$retail_price',
         unitid = '$unitid',
-        current_stock = '$current_stock',
+        current_stock = '$updated_current_stock',
         new_stock = '$new_stock',
-        total_stock = '$total_stock'
+        total_stock = '$total_stock',
+        current_stock_date = '$current_stock_date'
     WHERE inventory_id = '$inventory_id_'";
 
     if (mysqli_query($db_connection, $update_query)) {
@@ -137,6 +146,7 @@ if (isset($_POST['update_inventory'])) {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($db_connection) . "</div>";
     }
 }
+
 ?>
 
 
@@ -162,15 +172,16 @@ if (isset($_POST['update_inventory'])) {
                     <th>Size</th>
                     <th>Made From</th>
                     <th>Cooperative</th>
-                    <th>Quantity Available</th>
+                    <th hidden>Quantity Available</th>
                     <th>Reorder Threshold</th>
                     <th>Storage Location</th>
                     <th>Cost Price</th>
                     <th>Retail Price</th>
                     <th>Unit</th>
-                    <th>Current Stock</th>
+                    <!-- <th>Current Stock</th> -->
                     <th>New Stock</th>
-                    <th>Total Stock</th>
+                    <th>Current Stock</th>
+                    <th>Current Stock Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -195,7 +206,8 @@ if (isset($_POST['update_inventory'])) {
                     i.current_stock,
                     i.new_stock,
                     i.total_stock,
-                    i.inventory_id
+                    i.inventory_id,
+                    i.current_stock_date
                 FROM tblinventory i
                 LEFT JOIN tblcategory c ON i.categoryid = c.categoryid
                 LEFT JOIN tblsubcategory sc ON i.subcategoryid = sc.subcategoryid
@@ -219,17 +231,24 @@ if (isset($_POST['update_inventory'])) {
                     <td>" . htmlspecialchars($row['size']) . "</td>
                     <td>" . htmlspecialchars($row['madefrom']) . "</td>
                     <td>" . htmlspecialchars($row['cooperative']) . "</td>
-                    <td>" . htmlspecialchars($row['qty_available']) . "</td>
                     <td>" . htmlspecialchars($row['reorder_threshold']) . "</td>
                     <td>" . htmlspecialchars($row['storage']) . "</td>
                     <td>" . htmlspecialchars($row['cost_price']) . "</td>
                     <td>" . htmlspecialchars($row['retail_price']) . "</td>
                     <td>" . htmlspecialchars($row['unit']) . "</td>
-                    <td>" . htmlspecialchars($row['current_stock']) . "</td>
                     <td>" . htmlspecialchars($row['new_stock']) . "</td>
-                    <td>" . htmlspecialchars($row['total_stock']) . "</td>
+                    <td>" . htmlspecialchars($row['current_stock']) . "</td>
+                  <td>" . (
+                        !empty($row['current_stock_date']) && $row['current_stock_date'] != '0000-00-00 00:00:00'
+                        ? htmlspecialchars(date("F j, Y", strtotime($row['current_stock_date'])))
+                        : ""
+                    ) . "</td>
+
                     <td>";
-                    echo '<button onclick="ajax_fn(\'pages/inventory.php?inventory_id=' . $row['inventory_id'] . '\',\'main_content\');">Edit</button>';
+                  echo '<button class="icon-btn" onclick="ajax_fn(\'pages/inventory.php?inventory_id=' . $row['inventory_id'] . '\',\'main_content\')" title="Edit">
+    <i class="fas fa-edit"></i>
+</button>';
+
                     echo "</td>
                 </tr>";
                 }
@@ -239,17 +258,41 @@ if (isset($_POST['update_inventory'])) {
         </table>
     </div>
 </div>
+<style>
+.icon-btn {
+    background-color: #8b7455;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+    background-color: #7a664a;
+}
+
+.icon-btn i {
+    font-size: 16px;
+}
+</style>
+
 <?php
-// Database connection assumed to be stored in $db_connection
+// Assume database connection is stored in $db_connection
+
+// Initialize variables
 $product_id = $product_name = $color = $categoryid = $subcategoryid = $sizesid = $madefromid = $cooperativeid = '';
-$qty_available = $reorder_threshold = $storageid = $cost_price = $retail_price = $unitid = $current_stock = $new_stock = $total_stock = '';
+$qty_available = $reorder_threshold = $storageid = $cost_price = $retail_price = $unitid = $current_stock = $new_stock = $total_stock = $current_stock_date = '';
 
 if (isset($_GET['inventory_id'])) {
     $inventory_id = intval($_GET['inventory_id']);
     $sql = "SELECT * FROM tblinventory WHERE inventory_id = $inventory_id LIMIT 1";
     $result = mysqli_query($db_connection, $sql);
 
-    if ($row = mysqli_fetch_assoc($result)) {
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+
         $product_id = $row['product_id'];
         $product_name = $row['product_name'];
         $color = $row['color'];
@@ -267,9 +310,18 @@ if (isset($_GET['inventory_id'])) {
         $current_stock = $row['current_stock'];
         $new_stock = $row['new_stock'];
         $total_stock = $row['total_stock'];
+
+        // Properly format the date if not null or default
+        $raw_date = $row['current_stock_date'];
+        $current_stock_date = ($raw_date && $raw_date !== '0000-00-00 00:00:00')
+            ? date("Y-m-d", strtotime($raw_date))
+            : '';
+    } else {
+        echo "<div class='alert alert-danger'>Inventory item not found.</div>";
     }
 }
 ?>
+
 
 <!-- Add Inventory Section -->
 <div class="container">
@@ -339,7 +391,7 @@ if (isset($_GET['inventory_id'])) {
             ?>
         </select>
 
-        <input id="qty_available" type="number" value="<?php echo $qty_available; ?>" placeholder="Quantity Available">
+        <input id="qty_available" hidden type="number" value="<?php echo $qty_available; ?>" placeholder="Quantity Available">
         <input id="reorder_threshold" type="number" value="<?php echo $reorder_threshold; ?>" placeholder="Reorder Threshold">
 
         <!-- Storage -->
@@ -369,9 +421,15 @@ if (isset($_GET['inventory_id'])) {
             ?>
         </select>
 
-        <input id="current_stock" type="number" value="<?php echo $current_stock; ?>" placeholder="Current Stock">
+        <input id="total_stock" hidden type="number" value="<?php echo $total_stock; ?>" placeholder="Total Stock">
         <input id="new_stock" type="number" value="<?php echo $new_stock; ?>" placeholder="New Stock">
-        <input id="total_stock" type="number" value="<?php echo $total_stock; ?>" placeholder="Total Stock">
+
+        <input id="current_stock" type="number" value="<?php echo $current_stock; ?>" placeholder="Current Stock">
+
+        <span style="margin-top:12px;">New Stock Date:</span>
+        <input id="current_stock_date" type="date" value="<?php echo $current_stock_date; ?>" placeholder="Current Stock">
+
+
     </div>
     <br>
     <div align="right">
