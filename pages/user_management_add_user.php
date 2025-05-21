@@ -113,17 +113,34 @@ if (isset($_POST['edit_user'])) {
             $button_label = $row['is_blocked'] == 0 ? 'Block' : 'Unblock';
 
             echo "<td><span id='tmp_up{$row['accountid']}'>$status</span></td>";
-            echo "<td>
-                            <a style='text-decoration: none; cursor:pointer;' 
-                            onclick=\"ajax_fn('pages/user_management_update.php?toggle_block=1&accountid={$row['accountid']}', 'tmp_up{$row['accountid']}');\">
-                            $button_label
-                            </a>
-                        </td>";
-            echo '<td>
-                            <a style="text-decoration: none;" href="javascript:void(0);" onclick="ajax_fn(\'pages/user_management.php?edit=1&accountid=' . $row['accountid'] . '\',\'main_content\');">Edit</a>
-                        </td>';
+         echo "<td>
+    <button class='icon-btn' onclick=\"ajax_fn('pages/user_management_update.php?toggle_block=1&accountid={$row['accountid']}', 'tmp_up{$row['accountid']}')\" title=\"{$button_label}\">
+        <i class='fas fa-user-lock'></i>
+    </button>
+</td>";
+
+echo "<td>
+    <button class='icon-btn' onclick=\"ajax_fn('pages/user_management.php?edit=1&accountid={$row['accountid']}', 'main_content')\" title=\"Edit User\">
+        <i class='fas fa-edit'></i>
+    </button>
+</td>";
+
             echo "</tr>";
         }
         ?>
     </tbody>
 </table>
+<style>
+    .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: #333;
+    font-size: 16px;
+}
+.icon-btn:hover {
+    color: #007bff;
+}
+
+</style>
