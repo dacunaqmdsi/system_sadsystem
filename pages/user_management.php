@@ -83,6 +83,7 @@ echo "<td>
 
     <?php
     if (isset($_GET['edit'])) {
+        $accountid = GetData('select accountid from tblaccounts where accountid=' . $_GET['accountid']);
         $user_id = GetData('select user_id from tblaccounts where accountid=' . $_GET['accountid']);
         $last_name = GetData('select last_name from tblaccounts where accountid=' . $_GET['accountid']);
         $first_name = GetData('select first_name from tblaccounts where accountid=' . $_GET['accountid']);
@@ -132,8 +133,8 @@ echo "<td>
             </div>
         </div>
         <?php
-        if ($user_id) {
-            echo '<button class="btn" onclick="update_user(' . $user_id . ');">Update User</button>';
+        if ($accountid) {
+            echo '<button class="btn" onclick="update_user(' . $accountid . ');">Update User</button>';
         } else {
             echo '<button class="btn" onclick="create_user();">Create User</button>';
         }
