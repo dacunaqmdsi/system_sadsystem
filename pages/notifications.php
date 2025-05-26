@@ -1,8 +1,9 @@
-<?php include('../includes/init.php'); is_blocked(); ?>
+<?php include('../includes/init.php');
+is_blocked(); ?>
 
 <h2>Notifications</h2>
 
-<div class="notification-container">
+<div id="tmp_" class="notification-container">
     <div class="section-title">System Notifications</div>
     <div class="notification-box">
         Notifications will appear here.
@@ -23,11 +24,12 @@
                     $accountid = htmlspecialchars($rw['first_name']); // Sanitize the accountid
                     $accountid2 = htmlspecialchars($rw['last_name']); // Sanitize the accountid
                     $activity = htmlspecialchars($rw['activity']); // Sanitize the activity
+                    $desc = htmlspecialchars($rw['description']); // Sanitize the activity
                     echo '
                         <tr>
                             <td>' . $created_at . '</td>
                             <td>' . $accountid . ' ' . $accountid2 . '</td>
-                            <td>' . $activity . '</td>
+                            <td>' . $activity . ' ---  ' . $desc . '</td>
                         </tr>
                     ';
                 }
@@ -38,6 +40,12 @@
 </div>
 
 <style>
+    .notification-container {
+        max-height: 700px;
+        /* or any height you prefer */
+        overflow-y: auto;
+    }
+
     body {
         font-family: Arial, sans-serif;
         background-color: #f6f2e7;

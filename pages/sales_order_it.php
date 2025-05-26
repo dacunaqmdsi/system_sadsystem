@@ -101,6 +101,18 @@ if (isset($_POST['payment_method'])) {
             // Audit log for each item
             Audit($_SESSION['accountid'], "Process Sales: Inserted sales detail for Inventory ID: $inventory_id, Qty: $qty_ordered", "Inserted sales detail for Inventory ID: $inventory_id, Qty: $qty_ordered");
 
+            // Get current stock, reorder threshold, and product details
+            $inv_result = mysqli_query($db_connection, "
+                SELECT current_stock, reorder_threshold, product_id, product_name 
+                FROM tblinventory 
+                WHERE inventory_id = '$inventory_id'");
+            $inv_row = mysqli_fetch_assoc($inv_result);
+
+            $new_stock = $inv_row['current_stock'] - $qty_ordered;
+            $reorder_threshold = $inv_row['reorder_threshold'];
+            $product_id = $inv_row['product_id'];
+            $product_name = $inv_row['product_name'];
+
             // Update inventory
             mysqli_query($db_connection, "UPDATE tblinventory 
                 SET current_stock = current_stock - $qty_ordered,
@@ -109,6 +121,12 @@ if (isset($_POST['payment_method'])) {
 
             // Audit log for inventory update
             Audit($_SESSION['accountid'], 'Processed Sales', "Updated stock for Inventory ID: $inventory_id, Deducted: $qty_ordered");
+
+            // Check for low stock
+            if ($new_stock <= $reorder_threshold) {
+                Audit($_SESSION['accountid'], 'Low Stock Warning', 
+                    "Low stock on product (Product ID: $product_id, Product Name: $product_name, Inventory ID: $inventory_id). Remaining stock: $new_stock");
+            }
         }
 
         // Clear temporary order table

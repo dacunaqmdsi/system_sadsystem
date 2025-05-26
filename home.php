@@ -951,6 +951,15 @@ while ($row = mysqli_fetch_assoc($rs)) {
     $notifications[] = $row;
 }
 $notifCount = count($notifications);
+
+
+// Run this before the HTML so you can prepare notifications
+$rs_ = mysqli_query($db_connection, 'SELECT audit_id, activity, accountid, created_at FROM tblaudittrail ORDER BY created_at');
+$notifications_ = [];
+while ($row_ = mysqli_fetch_assoc($rs_)) {
+    $notifications_[] = $row_;
+}
+$notifCount_ = count($notifications_);
 ?>
 
 <body>
@@ -964,9 +973,9 @@ $notifCount = count($notifications);
             <div class="user-controls">
                 <div class="notification-icon" style="position:relative; cursor:pointer;" onclick="toggleNotif()">
                     <i class="fas fa-bell" style="color:#fff;"></i>
-                    <?php if ($notifCount > 0): ?>
+                    <?php if ($notifCount_ > 0): ?>
                         <span id="notificationCount" style="position:absolute; top:-8px; right:-8px; background:#f44; color:#fff; border-radius:50%; padding:2px 6px; font-size:12px;">
-                            <?= $notifCount ?>
+                            <?= $notifCount_ ?>
                         </span>
                     <?php endif; ?>
                 </div>
@@ -1057,7 +1066,7 @@ $notifCount = count($notifications);
 
 
 
-            <script>
+            <!-- <script>
                 function change_it_view(vall) {
                     if (vall === 'custom') {
                         document.getElementById('dashboardStartDate').style.display = 'inline-block';
@@ -1079,7 +1088,52 @@ $notifCount = count($notifications);
                         ajax_fn(url, 'tm');
                     }
                 }
+            </script> -->
+
+            <script>
+                function ajax_fn(url, targetId) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", url, true);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            document.getElementById(targetId).innerHTML = xhr.responseText;
+                        }
+                    };
+                    xhr.send();
+                }
+
+                function change_it_view(vall) {
+                    if (vall === 'custom') {
+                        document.getElementById('dashboardStartDate').style.display = 'inline-block';
+                        document.getElementById('dashboardEndDate').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('dashboardStartDate').style.display = 'none';
+                        document.getElementById('dashboardEndDate').style.display = 'none';
+                        let urlSales = 'get_total_sales.php?vall=' + vall;
+                        let urlOrders = 'get_recent_orders.php?vall=' + vall;
+                        ajax_fn(urlSales, 'tm');
+                        ajax_fn(urlOrders, 'recentOrdersBody');
+                    }
+                }
+
+                function updateDashboard() {
+                    let start = document.getElementById('dashboardStartDate').value;
+                    let end = document.getElementById('dashboardEndDate').value;
+
+                    if (start && end) {
+                        let urlSales = `get_total_sales.php?vall=custom&start=${start}&end=${end}`;
+                        let urlOrders = `get_recent_orders.php?vall=custom&start=${start}&end=${end}`;
+                        ajax_fn(urlSales, 'tm');
+                        ajax_fn(urlOrders, 'recentOrdersBody');
+                    }
+                }
+
+                // Auto-load "today" on page load
+                window.onload = function() {
+                    change_it_view('today');
+                };
             </script>
+
 
             <div class="module" id="dashboardModule">
                 <h2>Dashboard</h2>
@@ -1170,7 +1224,7 @@ $notifCount = count($notifications);
                                         <th>Category</th>
                                     </tr>
                                 </thead>
-                                <tbody id="recentOrdersBody">
+                                <tbody id="recentOrderdsBody">
                                     <?php
                                     $rs = mysqli_query($db_connection, 'SELECT categoryid, category FROM tblcategory');
                                     while ($rw = mysqli_fetch_array($rs)) {
@@ -1465,7 +1519,17 @@ $notifCount = count($notifications);
         updateClock(); // Initial call
     </script>
 
+<!-- ew Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                filteredData = rawSalesData.filter(d => new Date(d.date) >= monthAgo);
+            } else if (range === 'yearly') {
+                const yearAgo = new Date();
+                yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+                filteredData = rawSalesData.filter(d => new Date(d.date) >= yearAgo);
+            }
 
-</body>
-
-</html>
+            salesChart.data.labels = filteredData.map(row => row.date);
+            salesChart.data.datasets[0].data = filteredData.map(row => parseFloat(row.total));
+            salesChart.update();
+        } -->
+    </script>

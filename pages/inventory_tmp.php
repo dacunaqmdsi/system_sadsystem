@@ -96,7 +96,9 @@
                     <td>" . htmlspecialchars($row['new_stock']) . "</td>
                     <td>" . htmlspecialchars($row['total_stock']) . "</td>
                     <td>";
-            echo '<button onclick="ajax_fn(\'pages/inventory.php?inventory_id=' . $row['inventory_id'] . '\',\'main_content\');">Edit</button>';
+               echo '<button class="icon-btn" onclick="ajax_fn(\'pages/inventory.php?inventory_id=' . $row['inventory_id'] . '\',\'main_content\')" title="Edit">
+    <i class="fas fa-edit"></i>
+</button>';
             echo "</td>
                 </tr>";
         }
